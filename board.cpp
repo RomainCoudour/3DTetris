@@ -63,22 +63,20 @@ void Board::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Affichage grille jeu
-    glColor3f(1,1,1);
-    glBegin(GL_QUADS);
-    glVertex3f(0,0,0);
-    glVertex3f(10,0,0);
-    glVertex3f(10,20,0);
-    glVertex3f(0,20,0);
-    glEnd();
 
     glBegin(GL_LINES);
     for(int i=0;i<=10;i++) {
-        if (i==0) { glColor3f(.6,.3,.3); } else { glColor3f(.25,.25,.25); };
+        glColor3f(1,1,1);
         glVertex3f(i,0,0);
-        glVertex3f(i,0,10);
-        if (i==0) { glColor3f(.3,.3,.6); } else { glColor3f(.25,.25,.25); };
-        glVertex3f(0,0,i);
-        glVertex3f(10,0,i);
+        glVertex3f(i,20,0);
+    };
+    glEnd();
+
+    glBegin(GL_LINES);
+    for(int i=0;i<=20;i++) {
+        glColor3f(1,1,1);
+        glVertex3f(0,i,0);
+        glVertex3f(10,i,0);
     };
     glEnd();
 
