@@ -4,6 +4,8 @@ Block::Block(QColor color, QPoint origin)
 {
     mColor = color;
     mOrigin = origin;
+
+    createBlock();
 }
 
 Block::~Block(){

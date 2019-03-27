@@ -6,8 +6,7 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <vector>
-
-#include "tetrixpiece.h"
+#include "tetrisfactory.h"
 
 using namespace std;
 
@@ -36,7 +35,7 @@ protected:
 
 private:
     // Liste des pièces
-    vector<TetrixPiece*> pieces;
+    vector<TetrisPiece*> mPieces;
 
 
 };

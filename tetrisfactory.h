@@ -16,9 +16,9 @@ private:
     TetrisFactory();
     virtual ~TetrisFactory();
 
-    TetrisShape setShape();
-    QColor setColor(TetrisShape shape);
-    vector<QPoint> getOrigins(TetrisShape shape);
+    static TetrisShape setShape();
+    static QColor setColor(TetrisShape shape);
+    static vector<QPoint> getOrigins(TetrisShape shape);
 };
 
 #endif // TETRISFACTORY_H

@@ -6,13 +6,15 @@ TetrisPiece::TetrisPiece(QColor color, vector<QPoint> origins)
     mColor = color;
     mPiece.reserve(PIECE_SIZE);
     mOrigins = origins;
+
+    createPiece();
 }
 
 TetrisPiece::~TetrisPiece(){
 }
 
 void TetrisPiece::createPiece(){
-    for(QPoint origin : origins){
+    for(QPoint origin : mOrigins){
         mPiece.push_back(new Block(mColor, origin));
     }
 }

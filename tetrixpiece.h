@@ -33,7 +33,6 @@ private:
 
     TetrixShape pieceShape;
     int coords[4][2];
-    vector<GL_QUADS> quads;
 };
 
 #endif

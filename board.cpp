@@ -49,9 +49,6 @@ void Board::resizeGL(int width, int height)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    glOrtho(20,20, 20, 20, 5, 25.0);
 
 }
 
@@ -59,6 +56,7 @@ void Board::resizeGL(int width, int height)
 // Fonction d'affichage
 void Board::paintGL()
 {
+
     // Reinitialisation des tampons
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -80,10 +78,7 @@ void Board::paintGL()
     glEnd();
     //Possibiltié de la dessiner une fois, de clean la board et redessin les pièces
 
-
-    // Affichage des différentes pièces
-    for(TetrixPiece* p : pieces)
-        p->display();
+    TetrisPiece mPiece = TetrisFactory::createPiece();
 }
 
 

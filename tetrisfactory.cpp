@@ -1,4 +1,5 @@
 #include "tetrisfactory.h"
+#include "tetrispiece.h"
 #include <QRandomGenerator>
 
 TetrisFactory::TetrisFactory() {}
@@ -7,70 +8,90 @@ TetrisFactory::~TetrisFactory(){}
 
 TetrisPiece TetrisFactory::createPiece(){
     TetrisShape shape = setShape();
-    if(shape != NoShape)
-        return(new setColor(shape), getOrigins(shape));
-    return NULL;
+    return(TetrisPiece(setColor(shape), getOrigins(shape)));
 }
 
-TetrisShape TetrisPiece::setShape(){
+TetrisShape TetrisFactory::setShape(){
    return(TetrisShape(QRandomGenerator::global()->bounded(7) + 1));
 }
 
-QColor TetrisPiece::setColor(TetrisShape shape){
+QColor TetrisFactory::setColor(TetrisShape shape){
     switch (shape) {
     case ZShape:
-        return(QColor(Qt::GlobalColor(red)));
+        return(QColor("red"));
         break;
     case SShape:
-        return(QColor(Qt::GlobalColor(green)));
+        return(QColor("green"));
         break;
     case LineShape:
-        return(QColor(Qt::GlobalColor(cyan)));
+        return(QColor("cyan"));
         break;
     case TShape:
-        return(QColor(Qt::GlobalColor(purple)));
+        return(QColor("purple"));
         break;
     case SquareShape:
-        return(QColor(Qt::GlobalColor(yellow)));
+        return(QColor("yellow"));
         break;
     case LShape:
-        return(QColor(Qt::GlobalColor(blue)));
+        return(QColor("blue"));
         break;
     case MirroredLShape:
-        return(QColor(Qt::GlobalColor(orange)));
+        return(QColor("orange"));
         break;
     case NoShape:
-        return(QColor(Qt::GlobalColor(white)));
+        return(QColor("white"));
         break;
     default:
+        return(QColor("white"));
         break;
     }
 }
 
-vector<QPoint> getOrigins(TetrisShape shape){
-    QPoint point;
-    vector<QPoint> origins(PIECE_SIZE, 0);
+vector<QPoint> TetrisFactory::getOrigins(TetrisShape shape){
+    vector<QPoint> origins(PIECE_SIZE);
 
     switch (shape) {
     case ZShape:
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(-1,0));
+        origins.push_back(QPoint(0,1));
+        origins.push_back(QPoint(1,1));
         break;
     case SShape:
-        return(QColor(Qt::GlobalColor(green)));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(1,0));
+        origins.push_back(QPoint(0,1));
+        origins.push_back(QPoint(-1,1));
         break;
     case LineShape:
-        return(QColor(Qt::GlobalColor(cyan)));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(0,1));
+        origins.push_back(QPoint(0,2));
+        origins.push_back(QPoint(0,3));
         break;
     case TShape:
-        return(QColor(Qt::GlobalColor(purple)));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(0,1));
+        origins.push_back(QPoint(1,1));
+        origins.push_back(QPoint(-1,1));
         break;
     case SquareShape:
-        return(QColor(Qt::GlobalColor(yellow)));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(2,0));
+        origins.push_back(QPoint(2,2));
+        origins.push_back(QPoint(0,2));
         break;
     case LShape:
-        return(QColor(Qt::GlobalColor(blue)));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(0,-1));
+        origins.push_back(QPoint(0,1));
+        origins.push_back(QPoint(0,2));
         break;
     case MirroredLShape:
-        return(QColor(Qt::GlobalColor(orange)));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(0,-1));
+        origins.push_back(QPoint(0,-1));
+        origins.push_back(QPoint(0,-2));
         break;
     default:
         break;
