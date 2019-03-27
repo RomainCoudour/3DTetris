@@ -13,7 +13,6 @@
 
 using namespace std;
 
-
 class Board : public QGLWidget
 {
     Q_OBJECT

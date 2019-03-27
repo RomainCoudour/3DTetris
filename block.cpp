@@ -4,10 +4,10 @@ Block::Block(QColor color, QPoint origin)
 {
     mColor = color;
     mOrigin = origin;
-    translate = false;
 
     xTranslate = 0;
     yTranslate = 0;
+    angle = 0;
 
 }
 
@@ -20,11 +20,8 @@ void Block::displayBlock(){
     // Raw : glVertex3i(mOrigin.x(),mOrigin.y(),0);
     // /!\ 2D : (x,y) ---> 3D : (y,-z)
     glPushMatrix();
-    if(translate){
-        translate = !translate;
-        yTranslate--;
-        glTranslated(xTranslate,yTranslate,0);
-    }
+    glTranslated(xTranslate,yTranslate,0);
+    glRotated(angle, 0,0,1);
 
     glBegin(GL_QUADS);
     glColor3f((float)mColor.redF(), (float)mColor.greenF(), (float)mColor.blueF());
@@ -65,5 +62,17 @@ void Block::displayBlock(){
 }
 
 void Block::drop(){
-    translate = true;
+    yTranslate--;
+}
+
+void Block::goingLeft(){
+    xTranslate--;
+}
+
+void Block::goingRight(){
+    xTranslate++;
+}
+
+void Block::rotate(){
+    angle += 90;
 }

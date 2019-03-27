@@ -29,13 +29,16 @@ void TetrisPiece::display(){
 void TetrisPiece::onWebcamEvent(int direction){
     switch (direction) {
     case LEFT:
-        //
+        for(Block* block : mPiece)
+            block->goingLeft();
         break;
     case RIGHT:
-        //
+        for(Block* block : mPiece)
+            block->goingRight();
         break;
     case ROTATE:
-        //
+        for(Block* block : mPiece)
+            block->rotate();
         break;
 
     default:

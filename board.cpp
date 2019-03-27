@@ -74,16 +74,16 @@ void Board::paintGL()
     glBegin(GL_LINES);
     for(int i=0;i<=10;i++) {
         glColor3f(1,1,1);
-        glVertex3f(i,0,0);
-        glVertex3f(i,20,0);
+        glVertex3f(i-5,0,0);
+        glVertex3f(i-5,-20,0);
     };
     glEnd();
 
     glBegin(GL_LINES);
     for(int i=0;i<=20;i++) {
         glColor3f(1,1,1);
-        glVertex3f(0,i,0);
-        glVertex3f(10,i,0);
+        glVertex3f(-5,-i,0);
+        glVertex3f(5,-i,0);
     };
     glEnd();
 
@@ -95,15 +95,20 @@ void Board::paintGL()
 // Fonction de gestion d'interactions clavier
 void Board::keyPressEvent(QKeyEvent * event)
 {
-   switch(event->key())
-    {
-        // Cas par defaut
-        default:
-        {
-            // Ignorer l'evenement
-            event->ignore();
-            return;
-        }
+    switch (event->key()) {
+    case Qt::Key_Left:
+        curPiece.onWebcamEvent(LEFT);
+        break;
+    case Qt::Key_Right:
+        curPiece.onWebcamEvent(RIGHT);
+        break;
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+        curPiece.onWebcamEvent(ROTATE);
+        break;
+    default:
+        event->ignore();
+        break;
     }
 
     // Acceptation de l'evenement et mise a jour de la scene

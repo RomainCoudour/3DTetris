@@ -15,14 +15,17 @@ public:
     //Methods
     void displayBlock();
     void drop();
+    void goingLeft();
+    void goingRight();
+    void rotate();
 
 private:
     int const BLOCK_DIM = 1;
 
-    bool translate;
     QColor mColor;
     QPoint mOrigin;
     int xTranslate, yTranslate;
+    int angle;
 };
 
 #endif // BLOCK_H
