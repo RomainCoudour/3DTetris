@@ -6,7 +6,9 @@ Block::Block(QColor color, QPoint origin)
     mOrigin = origin;
     translate = false;
 
-    displayBlock();
+    xTranslate = 0;
+    yTranslate = 0;
+
 }
 
 Block::~Block(){
@@ -19,8 +21,9 @@ void Block::displayBlock(){
     // /!\ 2D : (x,y) ---> 3D : (y,-z)
     glPushMatrix();
     if(translate){
-        translate != translate;
-        glTranslated(0,-1,0);
+        translate = !translate;
+        yTranslate--;
+        glTranslated(xTranslate,yTranslate,0);
     }
 
     glBegin(GL_QUADS);

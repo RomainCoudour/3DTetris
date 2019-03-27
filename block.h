@@ -22,6 +22,7 @@ private:
     bool translate;
     QColor mColor;
     QPoint mOrigin;
+    int xTranslate, yTranslate;
 };
 
 #endif // BLOCK_H

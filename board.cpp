@@ -22,7 +22,7 @@ Board::Board(QWidget *parent)
         updateGL();
     });
 
-    mTimer.setInterval(10);
+    mTimer.setInterval(1000);
     mTimer.start();
 }
 
