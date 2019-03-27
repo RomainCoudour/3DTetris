@@ -20,6 +20,7 @@ public:
 
     //Methods
     void createPiece();
+    void display();
     void onWebcamEvent(int direction);
     vector<Block*> getBlocks(){return mPiece;}
 

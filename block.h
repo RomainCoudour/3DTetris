@@ -13,7 +13,7 @@ public:
     virtual ~Block();
 
     //Methods
-    void createBlock();
+    void displayBlock();
     void drop();
 
 private:

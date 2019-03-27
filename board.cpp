@@ -88,7 +88,7 @@ void Board::paintGL()
     glEnd();
 
 
-    curPiece.createPiece();
+    curPiece.display();
 }
 
 

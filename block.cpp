@@ -6,13 +6,13 @@ Block::Block(QColor color, QPoint origin)
     mOrigin = origin;
     translate = false;
 
-    createBlock();
+    displayBlock();
 }
 
 Block::~Block(){
 }
 
-void Block::createBlock(){
+void Block::displayBlock(){
 
     // Dims : 1x1x1
     // Raw : glVertex3i(mOrigin.x(),mOrigin.y(),0);

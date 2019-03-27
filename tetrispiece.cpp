@@ -8,6 +8,7 @@ TetrisPiece::TetrisPiece(QColor color, vector<QPoint> origins)
     mColor = color;
     mPiece.reserve(PIECE_SIZE);
     mOrigins = origins;
+    createPiece();
 }
 
 TetrisPiece::~TetrisPiece(){
@@ -18,6 +19,12 @@ void TetrisPiece::createPiece(){
         mPiece.push_back(new Block(mColor, origin));
     }
 }
+
+void TetrisPiece::display(){
+    for(Block* block : mPiece)
+        block->displayBlock();
+}
+
 
 void TetrisPiece::onWebcamEvent(int direction){
     switch (direction) {
