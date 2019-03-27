@@ -5,8 +5,11 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QKeyEvent>
+#include <QTimer>
 #include <vector>
 #include "tetrisfactory.h"
+#include "tetrispiece.h"
+#include "block.h"
 
 using namespace std;
 
@@ -33,9 +36,15 @@ protected:
     // Fonction de gestion d'interactions clavier
     void keyPressEvent(QKeyEvent * event);
 
+    void pieceDrop();
+
 private:
     // Liste des pièces
-    vector<TetrisPiece*> mPieces;
+    //vector<TetrisPiece*> mPieces;
+
+    QTimer mTimer;
+    TetrisPiece curPiece;
+    TetrisPiece nextPiece;
 
 
 };

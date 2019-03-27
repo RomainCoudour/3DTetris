@@ -14,12 +14,14 @@ class TetrisPiece
 {
 
 public:
+    TetrisPiece();
     TetrisPiece(QColor color, vector<QPoint> origins);
     virtual ~TetrisPiece();
 
     //Methods
     void createPiece();
     void onWebcamEvent(int direction);
+    vector<Block*> getBlocks(){return mPiece;}
 
 private:
     vector<Block*> mPiece;

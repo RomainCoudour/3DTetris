@@ -14,10 +14,12 @@ public:
 
     //Methods
     void createBlock();
+    void drop();
 
 private:
     int const BLOCK_DIM = 1;
 
+    bool translate;
     QColor mColor;
     QPoint mOrigin;
 };

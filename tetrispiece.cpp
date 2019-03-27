@@ -1,13 +1,13 @@
 #include "tetrispiece.h"
 #include "block.h"
 
+TetrisPiece::TetrisPiece(){}
+
 TetrisPiece::TetrisPiece(QColor color, vector<QPoint> origins)
 {
     mColor = color;
     mPiece.reserve(PIECE_SIZE);
     mOrigins = origins;
-
-    createPiece();
 }
 
 TetrisPiece::~TetrisPiece(){

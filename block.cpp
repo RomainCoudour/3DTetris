@@ -4,6 +4,7 @@ Block::Block(QColor color, QPoint origin)
 {
     mColor = color;
     mOrigin = origin;
+    translate = false;
 
     createBlock();
 }
@@ -16,6 +17,11 @@ void Block::createBlock(){
     // Dims : 1x1x1
     // Raw : glVertex3i(mOrigin.x(),mOrigin.y(),0);
     // /!\ 2D : (x,y) ---> 3D : (y,-z)
+    glPushMatrix();
+    if(translate){
+        translate != translate;
+        glTranslated(0,-1,0);
+    }
 
     glBegin(GL_QUADS);
     glColor3f((float)mColor.redF(), (float)mColor.greenF(), (float)mColor.blueF());
@@ -52,4 +58,9 @@ void Block::createBlock(){
 
 
     glEnd();
+    glPopMatrix();
+}
+
+void Block::drop(){
+    translate = true;
 }

@@ -14,6 +14,16 @@ Board::Board(QWidget *parent)
     // Reglage de la taille/position
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
+
+    curPiece = TetrisFactory::createPiece();
+
+    connect(&mTimer,  &QTimer::timeout, [&] {
+        pieceDrop();
+        updateGL();
+    });
+
+    mTimer.setInterval(10);
+    mTimer.start();
 }
 
 Board::~Board()
@@ -76,9 +86,9 @@ void Board::paintGL()
         glVertex3f(10,i,0);
     };
     glEnd();
-    //Possibiltié de la dessiner une fois, de clean la board et redessin les pièces
 
-    TetrisPiece mPiece = TetrisFactory::createPiece();
+
+    curPiece.createPiece();
 }
 
 
@@ -99,4 +109,9 @@ void Board::keyPressEvent(QKeyEvent * event)
     // Acceptation de l'evenement et mise a jour de la scene
     event->accept();
     updateGL();
+}
+
+void Board::pieceDrop(){
+    for(Block* block : curPiece.getBlocks())
+        block->drop();
 }
