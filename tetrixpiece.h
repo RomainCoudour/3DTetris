@@ -2,7 +2,7 @@
 #define TETRIXPIECE_H
 
 #include <GL/glu.h>
-#include <QColor>
+#include <vector>
 
 enum TetrixShape { NoShape, ZShape, SShape, LineShape, TShape, SquareShape,
                    LShape, MirroredLShape };
@@ -33,8 +33,7 @@ private:
 
     TetrixShape pieceShape;
     int coords[4][2];
-    QColor color;
-    GLUquadric* quadric;
+    vector<GL_QUADS> quads;
 };
 
 #endif

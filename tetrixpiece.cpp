@@ -4,14 +4,9 @@
 
 TetrixPiece::TetrixPiece(){
     setShape(NoShape);
-
-    // Creation de la quadrique
-    quadric = gluNewQuadric();
-    gluQuadricDrawStyle(quadric, GLU_FILL);
 }
 
 TetrixPiece::~TetrixPiece(){
-    gluDeleteQuadric(quadric);
 }
 
 void TetrixPiece::setRandomShape()

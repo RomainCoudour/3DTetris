@@ -63,7 +63,6 @@ void Board::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Affichage grille jeu
-
     glBegin(GL_LINES);
     for(int i=0;i<=10;i++) {
         glColor3f(1,1,1);
@@ -79,6 +78,8 @@ void Board::paintGL()
         glVertex3f(10,i,0);
     };
     glEnd();
+    //Possibiltié de la dessiner une fois, de clean la board et redessin les pièces
+
 
     // Affichage des différentes pièces
     for(TetrixPiece* p : pieces)
