@@ -77,9 +77,9 @@ vector<QPoint> TetrisFactory::getOrigins(TetrisShape shape){
         break;
     case SquareShape:
         origins.push_back(QPoint(0,0));
-        origins.push_back(QPoint(2,0));
-        origins.push_back(QPoint(2,2));
-        origins.push_back(QPoint(0,2));
+        origins.push_back(QPoint(0,1));
+        origins.push_back(QPoint(1,1));
+        origins.push_back(QPoint(1,0));
         break;
     case LShape:
         origins.push_back(QPoint(0,0));
