@@ -33,7 +33,9 @@ protected:
     void initializeGrid();
     void drawBlocks();
     bool checkForCollisions();
+    bool checkForCollisionsBeforeMoving(int direction);
     void checkForRowsComplete();
+    void fillTempArray(int currRow, int rowToAdd);
 
 
 private:
@@ -41,12 +43,15 @@ private:
     int GRID_ROWS = 20;
     int LOWER_BORDER = -21; // Coord y de la dernière ligneH
     int SIDE_BORDER = 5; // Coord x de la première/dernière ligneV
+    bool isRowComplete = false;
     bool isLost = false;
+    bool isOnPause = false;
 
     QTimer mTimer;
     TetrisPiece curPiece;
     TetrisPiece nextPiece;
     vector<vector<Block*>> array;
+    vector<vector<Block*>> tempArray;
 
 };
 

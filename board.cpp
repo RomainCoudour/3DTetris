@@ -107,14 +107,17 @@ void Board::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
     case Qt::Key_Left:
-        curPiece.onWebcamEvent(LEFT);
+        if(!checkForCollisionsBeforeMoving(LEFT))
+            curPiece.onWebcamEvent(LEFT);
         break;
     case Qt::Key_Right:
-        curPiece.onWebcamEvent(RIGHT);
+        if(!checkForCollisionsBeforeMoving(RIGHT))
+            curPiece.onWebcamEvent(RIGHT);
         break;
     case Qt::Key_Up:
     case Qt::Key_Down:
-        curPiece.onWebcamEvent(ROTATE);
+        if(!checkForCollisionsBeforeMoving(ROTATE))
+            curPiece.onWebcamEvent(ROTATE);
         break;
     default:
         event->ignore();
@@ -154,9 +157,45 @@ bool Board::checkForCollisions(){
     return false;
 }
 
-void Board::checkForRowsComplete(){
-    // TODO : Parcours array sur un ROW et check si toutes les cases sont occupées
-    //si c'est le cas : supprime les blocks (allocation mémoire donc delete) et descend toutes les lignes supérieures de un
-    //Attention à la logique des choses
+bool Board::checkForCollisionsBeforeMoving(int direction){
+    // TODO : if piece might hit a border or a block, return true;
+    return false;
+}
 
+void Board::checkForRowsComplete(){
+
+    //TODO : Reste à baisser les lignes pour combler les trous, attention a ne pas changer dynamiquement array dans un for
+    // Possible idée : créer un tableau temporaire et y ajouter les rangs non complets
+    int currRow = 0;
+
+    // A mettre dans le constructeur pour appel une fois seulement ? Ou la méthode clear, défonce tout ?
+    tempArray.resize(GRID_ROWS, vector<Block*>(GRID_COLUMNS,nullptr));
+
+    for(int i = 0; i < GRID_ROWS; i++){
+        isRowComplete = true;
+        for(Block* block : array[i]){
+            if(block == nullptr){
+                isRowComplete = false;
+                fillTempArray(curRow, i);
+                curRow++;
+                break;
+            }
+        }
+        if(isRawComplete){
+            for(Block* block : array[i]){
+                delete[] block;
+                block = nullptr;
+            }
+        }
+    }
+
+    array = tempArray;
+    tempArray.clear();
+}
+
+// TODO : Regarder la cohérence
+void Board::fillTempArray(int currRow, int rowToAdd){
+    for(int j = 0; j < GRID_COLUMNS; j++){
+        tempArray[currRow][j] = array[rowToAdd][j];
+    }
 }
