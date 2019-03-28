@@ -16,6 +16,8 @@ Board::Board(QWidget *parent)
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
 
     curPiece = TetrisFactory::createPiece();
+    //Uncommment and implement when collisions are set
+    //nextPiece = TetrisFactory::createPiece();
 
     connect(&mTimer,  &QTimer::timeout, [&] {
         pieceDrop();
@@ -24,11 +26,14 @@ Board::Board(QWidget *parent)
 
     mTimer.setInterval(1000);
     mTimer.start();
+
+    // Grid as array
+    initializeGrid();
 }
 
 Board::~Board()
 {
-
+    // TODO : NoMemoryLeak
 }
 
 
@@ -87,6 +92,11 @@ void Board::paintGL()
     };
     glEnd();
 
+    // Affichage éléments
+    drawBlocks(); // Dessiner les blocks après le checkForCollisions pour éviter opérations inutiles non ?
+    // checkForCollisions(); // ... a vérifier lors d'un déplacement plutôt ? Et donc renverrait un boolean.
+    //Attention, prendre en compte le déplacement vertical TIMER !
+    checkForRowsComplete();
 
     curPiece.display();
 }
@@ -119,4 +129,34 @@ void Board::keyPressEvent(QKeyEvent * event)
 void Board::pieceDrop(){
     for(Block* block : curPiece.getBlocks())
         block->drop();
+}
+
+void Board::initializeGrid(){
+    array.resize(GRID_ROWS, vector<Block*>(GRID_COLUMNS,nullptr));
+}
+
+void Board::drawBlocks(){
+    for(int i = 0; i < GRID_ROWS; i++)
+        for(Block* block : array[i]){
+            if(block != nullptr)
+                block->displayBlock();
+        }
+}
+
+bool Board::checkForCollisions(){
+    // TODO : if piece.x hits x = +-5 = side border
+    // return true
+
+    // TODO : if piece.y hits y = -21 = lower border
+    // TODO : if piece hits blocks
+    //Transfert les pointeurs vers array, transfert nextPiece, retrun true
+
+    return false;
+}
+
+void Board::checkForRowsComplete(){
+    // TODO : Parcours array sur un ROW et check si toutes les cases sont occupées
+    //si c'est le cas : supprime les blocks (allocation mémoire donc delete) et descend toutes les lignes supérieures de un
+    //Attention à la logique des choses
+
 }

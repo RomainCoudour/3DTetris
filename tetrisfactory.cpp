@@ -84,14 +84,14 @@ vector<QPoint> TetrisFactory::getOrigins(TetrisShape shape){
     case LShape:
         origins.push_back(QPoint(0,0));
         origins.push_back(QPoint(0,-1));
-        origins.push_back(QPoint(0,1));
-        origins.push_back(QPoint(0,2));
+        origins.push_back(QPoint(1,0));
+        origins.push_back(QPoint(2,0));
         break;
     case MirroredLShape:
         origins.push_back(QPoint(0,0));
         origins.push_back(QPoint(0,-1));
-        origins.push_back(QPoint(0,-1));
-        origins.push_back(QPoint(0,-2));
+        origins.push_back(QPoint(-1,0));
+        origins.push_back(QPoint(-2,0));
         break;
     default:
         break;

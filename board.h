@@ -22,29 +22,31 @@ public:
     ~Board();
 
 protected:
-
-    // Fonction d'initialisation
+    // GL METHODS
     void initializeGL();
-
-    // Fonction de redimensionnement
     void resizeGL(int width, int height);
-
-    // Fonction d'affichage
     void paintGL();
 
-    // Fonction de gestion d'interactions clavier
+    // METHODS
     void keyPressEvent(QKeyEvent * event);
-
     void pieceDrop();
+    void initializeGrid();
+    void drawBlocks();
+    bool checkForCollisions();
+    void checkForRowsComplete();
+
 
 private:
-    // Liste des pièces
-    //vector<TetrisPiece*> mPieces;
+    int GRID_COLUMNS = 10;
+    int GRID_ROWS = 20;
+    int LOWER_BORDER = -21; // Coord y de la dernière ligneH
+    int SIDE_BORDER = 5; // Coord x de la première/dernière ligneV
+    bool isLost = false;
 
     QTimer mTimer;
     TetrisPiece curPiece;
     TetrisPiece nextPiece;
-
+    vector<vector<Block*>> array;
 
 };
 
