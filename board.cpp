@@ -199,18 +199,11 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
         break;
 
     case ROTATE:
-        //for(Block* block : curPiece.getBlocks()){
-            for (int i = 0; i < curPiece.getOrigins().size(); i++) {
-                points[i] = QPoint(-curPiece.getBlocks().at(i)->getOrigine().y(),curPiece.getBlocks().at(i)->getOrigine().x());
-                if (points[i].x()+curPiece.getBlocks().at(i)->getXTranslate() < -5 || points[i].x() + curPiece.getBlocks().at(i)->getXTranslate()>4 || points[i].y() + curPiece.getBlocks().at(i)->getYTranslate()<-20)
-                    return true;
-            }
-
-            /*if (block->getOrigine().x()+block->getXTranslate()<-5 || block->getOrigine().x()+block->getXTranslate()>4){
-                qDebug() << "Touched";
+        for (int i = 0; i < curPiece.getOrigins().size(); i++) {
+            points[i] = QPoint(-curPiece.getBlocks().at(i)->getOrigine().y(),curPiece.getBlocks().at(i)->getOrigine().x());
+            if (points[i].x()+curPiece.getBlocks().at(i)->getXTranslate() < -5 || points[i].x() + curPiece.getBlocks().at(i)->getXTranslate()>4 || points[i].y() + curPiece.getBlocks().at(i)->getYTranslate()<-20)
                 return true;
-           }*/
-        //}
+        }
         break;
 
     default:
