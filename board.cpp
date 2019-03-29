@@ -23,6 +23,8 @@ Board::Board(QWidget *parent)
         if(!isOnPause && !isLost){
             if(!checkForCollisions())
                 pieceDrop(curPiece);
+            else
+                nextMove();
             updateGL();
         }
     });
@@ -83,7 +85,7 @@ void Board::paintGL()
     for(int i=0;i<=10;i++) {
         glColor3f(1,1,1);
         glVertex3f(i,0,0);
-        glVertex3f(i,20,0);
+        glVertex3f(i,GRID_ROWS,0);
     };
     glEnd();
 
@@ -91,7 +93,7 @@ void Board::paintGL()
     for(int i=0;i<=20;i++) {
         glColor3f(1,1,1);
         glVertex3f(0,i,0);
-        glVertex3f(10,i,0);
+        glVertex3f(GRID_COLUMNS,i,0);
     };
     glEnd();
 
@@ -155,12 +157,10 @@ void Board::drawBlocks(){
 
 bool Board::checkForCollisions(){
     for(Block* block : curPiece.getBlocks()){
-        if(!checkArrayForCollisions(*block, DROP) || block->getCurrOrigin().y()-1 < LOWER_BORDER){
-            //nextMove();
+        if(block->getCurrOrigin().y()-1 < LOWER_BORDER || checkArrayForCollisions(block, DROP)){
             return true;
         }
     }
-
     return false;
 }
 
@@ -200,32 +200,28 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
     return false;
 }
 
-bool Board::checkArrayForCollisions(Block block, int direction){
-    QPoint coord = block.getCurrOrigin();
-//    switch (direction) {
-//    case LEFT:
-//        return(array[coord.x()-1][coord.y()] != nullptr);
-//        break;
-//    case RIGHT:
-//        return(array[coord.x()+1][coord.y()] != nullptr);
-//        break;
-//    case DROP:
-//        return(array[coord.x()][coord.y()-1] != nullptr);
-//        break;
-//    case ROTATE:
-//        return(array[coord.x()][coord.y()] != nullptr);
-//        break;
-//    default:
-//        return false;
-//        break;
-//    }
-//    for(int i = 0; i < GRID_ROWS; i++)
-//        for(Block* b : array[i])
-//            if(b == nullptr)
-//                return false;
-//    return true;
-
-    //return(array[coord.x()][coord.y()-1] == nullptr);
+bool Board::checkArrayForCollisions(Block* block, int direction){
+    QPoint coord = block->getCurrOrigin();
+    if(coord.y() < GRID_ROWS && coord.y() > LOWER_BORDER && coord.x() > SIDE_BORDER_LEFT && coord.x() < SIDE_BORDER_RIGHT){
+        switch (direction) {
+        case LEFT:
+            return(array[coord.y()][coord.x()-1] != nullptr);
+            break;
+        case RIGHT:
+            return(array[coord.y()][coord.x()+1] != nullptr);
+            break;
+        case DROP:
+            return(array[coord.y()-1][coord.x()] != nullptr);
+            break;
+        case ROTATE:
+            return(array[coord.y()][coord.x()] != nullptr);
+            break;
+        default:
+            return false;
+            break;
+        }
+    }
+    return false;
 }
 
 void Board::checkForRowsComplete(){
@@ -234,8 +230,8 @@ void Board::checkForRowsComplete(){
 
     for(int i = 0; i < GRID_ROWS; i++){
         isRowComplete = true;
-        for(Block* block : array[i]){
-            if(block == nullptr){
+        for(int j = 0; j < GRID_COLUMNS; j++){
+            if(array[i][j] == nullptr){
                 isRowComplete = false;
                 fillTempArray(currRow, i);
                 currRow++;
@@ -251,10 +247,8 @@ void Board::checkForRowsComplete(){
     }
 
     array = tempArray;
-    tempArray.clear();
 }
 
-// TODO : Regarder la cohérence
 void Board::fillTempArray(int currRow, int rowToAdd){
     for(int j = 0; j < GRID_COLUMNS; j++){
         tempArray[currRow][j] = array[rowToAdd][j];
@@ -263,7 +257,7 @@ void Board::fillTempArray(int currRow, int rowToAdd){
 
 void Board::nextMove(){
     for(Block* block : curPiece.getBlocks())
-        array[block->getCurrOrigin().x()][block->getCurrOrigin().y()] = block;
+        array[block->getCurrOrigin().y()][block->getCurrOrigin().x()] = block;
 
     curPiece = nextPiece;
     nextPiece = TetrisFactory::createPiece();

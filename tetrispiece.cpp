@@ -4,8 +4,9 @@
 
 TetrisPiece::TetrisPiece(){}
 
-TetrisPiece::TetrisPiece(QColor color, vector<QPoint> origins)
+TetrisPiece::TetrisPiece(TetrisShape shape, QColor color, vector<QPoint> origins)
 {
+    mShape = shape;
     mColor = color;
     mOrigins = origins;
     createPiece();
@@ -38,11 +39,13 @@ void TetrisPiece::onWebcamEvent(int direction){
             block->goingRight();
         break;
     case ROTATE:
-        for (int i = 0; i < this->mOrigins.size(); i++){
-            mPiece.at(i)->setOrigine(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
-            resOrigins.push_back(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
+        if(mShape != SquareShape){
+            for (int i = 0; i < this->mOrigins.size(); i++){
+                mPiece.at(i)->setOrigine(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
+                resOrigins.push_back(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
+            }
+            this->mOrigins = resOrigins;
         }
-        this->mOrigins = resOrigins;
         break;
 
     default:

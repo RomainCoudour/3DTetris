@@ -8,7 +8,7 @@ TetrisFactory::~TetrisFactory(){}
 
 TetrisPiece TetrisFactory::createPiece(){
     TetrisShape shape = setShape();
-    return(TetrisPiece(setColor(shape), getOrigins(shape)));
+    return(TetrisPiece(shape, setColor(shape), getOrigins(shape)));
 }
 
 TetrisShape TetrisFactory::setShape(){

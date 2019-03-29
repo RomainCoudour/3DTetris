@@ -34,7 +34,7 @@ protected:
     void drawBlocks();
     bool checkForCollisions();
     bool checkForCollisionsBeforeMoving(int direction);
-    bool checkArrayForCollisions(Block block, int direction);
+    bool checkArrayForCollisions(Block* block, int direction);
     void checkForRowsComplete();
     void fillTempArray(int currRow, int rowToAdd);
     void nextMove();

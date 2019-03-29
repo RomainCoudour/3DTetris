@@ -4,9 +4,6 @@
 #include "tetrispiece.h"
 #include <QColor>
 
-enum TetrisShape { NoShape, ZShape, SShape, LineShape, TShape, SquareShape,
-                   LShape, MirroredLShape };
-
 class TetrisFactory
 {
 public:

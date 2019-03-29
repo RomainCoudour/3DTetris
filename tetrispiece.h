@@ -9,13 +9,15 @@ using namespace std;
 
 int const PIECE_SIZE = 4;
 enum TetrisMouvement { LEFT, RIGHT, ROTATE, DROP };
+enum TetrisShape { NoShape, ZShape, SShape, LineShape, TShape, SquareShape,
+                   LShape, MirroredLShape };
 
 class TetrisPiece
 {
 
 public:
     TetrisPiece();
-    TetrisPiece(QColor color, vector<QPoint> origins);
+    TetrisPiece(TetrisShape shape, QColor color, vector<QPoint> origins);
     virtual ~TetrisPiece();
 
     //Methods
@@ -26,6 +28,7 @@ public:
     vector<QPoint> getOrigins(){return mOrigins;}
 
 private:
+    TetrisShape mShape;
     vector<Block*> mPiece;
     QColor mColor;
     vector<QPoint> mOrigins;
