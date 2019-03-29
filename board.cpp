@@ -131,6 +131,19 @@ void Board::keyPressEvent(QKeyEvent * event)
         else
             mTimer.start();
         break;
+    case Qt::Key_R :
+        mTimer.stop();
+        reset();
+        mTimer.start();
+        break;
+    case Qt::Key_Space:
+        mTimer.stop();
+        while(!checkForCollisions()){
+            pieceDrop(curPiece);
+            updateGL();
+        }
+        mTimer.start();
+        break;
     default:
         event->ignore();
         break;
@@ -260,4 +273,8 @@ void Board::nextMove(){
 
     curPiece = nextPiece;
     nextPiece = TetrisFactory::createPiece();
+}
+
+void Board::reset(){
+
 }

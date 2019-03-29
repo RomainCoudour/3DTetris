@@ -38,6 +38,7 @@ protected:
     bool checkForRowsComplete();
     void clearCompleteRow(int i);
     void nextMove();
+    void reset();
 
 
 private:
@@ -55,7 +56,6 @@ private:
     TetrisPiece curPiece;
     TetrisPiece nextPiece;
     vector<vector<Block*>> array;
-    vector<vector<Block*>> tempArray;
 
 };
 
