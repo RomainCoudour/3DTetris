@@ -158,6 +158,8 @@ bool Board::checkForCollisions(){
     // TODO : if piece hits blocks
     //Transfert les pointeurs vers array, transfert nextPiece, retrun true
 
+
+
     for(Block* block : curPiece.getBlocks()){
         if (block->getOrigine().y()+block->getYTranslate()-1<-20)
             return true;
@@ -169,6 +171,8 @@ bool Board::checkForCollisions(){
 bool Board::checkForCollisionsBeforeMoving(int direction){
     // TODO : if piece might hit a border or a block, return true;
     // Créer une pièce fictive, la tourner et checker si elle touche les bords
+
+    QPoint points [4];
 
     switch (direction) {
 
@@ -187,13 +191,18 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
         break;
 
     case ROTATE:
-        /*for(Block* block : pieceTest.getBlocks()){
-            //qDebug() << (block->getOrigine().x()+block->getXTranslate()<-5|| block->getOrigine().x()+block->getXTranslate()>4);
-            if (block->getOrigine().x()+block->getXTranslate()<-5 || block->getOrigine().x()+block->getXTranslate()>4){
+        //for(Block* block : curPiece.getBlocks()){
+            for (int i = 0; i < curPiece.getOrigins().size(); i++) {
+                points[i] = QPoint(-curPiece.getBlocks().at(i)->getOrigine().y(),curPiece.getBlocks().at(i)->getOrigine().x());
+                if (points[i].x()+curPiece.getBlocks().at(i)->getXTranslate() < -5 || points[i].x() + curPiece.getBlocks().at(i)->getXTranslate()>4 || points[i].y() + curPiece.getBlocks().at(i)->getYTranslate()<-20)
+                    return true;
+            }
+
+            /*if (block->getOrigine().x()+block->getXTranslate()<-5 || block->getOrigine().x()+block->getXTranslate()>4){
                 qDebug() << "Touched";
                 return true;
-            }
-        }*/
+           }*/
+        //}
         break;
 
     default:
