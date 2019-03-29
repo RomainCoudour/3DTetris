@@ -227,14 +227,15 @@ bool Board::checkArrayForCollisions(Block* block, int direction){
 bool Board::checkForRowsComplete(){
     for(int i = 0; i < GRID_ROWS; i++){
         row = i;
-        isComplete = true;
         for(Block* b : array[i]){
             if(b == nullptr){
                 isComplete = false;
                 break;
             }
-            return isComplete;
+            else
+                isComplete = true;
         }
+        if(isComplete) return isComplete;
     }
     return false;
 }

@@ -47,7 +47,7 @@ private:
     int SIDE_BORDER_LEFT = 0;
     int SIDE_BORDER_RIGHT = 10;
     int row;
-    bool isComplete;
+    bool isComplete = false;
     bool isLost = false;
     bool isOnPause = false;
 
