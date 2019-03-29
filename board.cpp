@@ -97,7 +97,10 @@ void Board::paintGL()
     };
     glEnd();
 
-    checkForRowsComplete();
+    while(checkForRowsComplete()){
+        clearCompleteRow(row);
+    }
+
     drawBlocks();
     curPiece.display();
 }
@@ -165,23 +168,20 @@ bool Board::checkForCollisions(){
 }
 
 bool Board::checkForCollisionsBeforeMoving(int direction){
-    // TODO : if piece might hit a border or a block, return true;
-    // Créer une pièce fictive, la tourner et checker si elle touche les bords
-
     QPoint points [4];
 
     switch (direction) {
 
     case RIGHT:
         for(Block* block : curPiece.getBlocks()){
-            if (block->getCurrOrigin().x()+1 >= SIDE_BORDER_RIGHT)
+            if (block->getCurrOrigin().x()+1 >= SIDE_BORDER_RIGHT || checkArrayForCollisions(block,RIGHT))
                 return true;
         }
         break;
 
     case LEFT:
         for(Block* block : curPiece.getBlocks()){
-            if (block->getCurrOrigin().x()-1 < SIDE_BORDER_LEFT)
+            if (block->getCurrOrigin().x()-1 < SIDE_BORDER_LEFT || checkArrayForCollisions(block,LEFT))
                 return true;
         }
         break;
@@ -224,34 +224,32 @@ bool Board::checkArrayForCollisions(Block* block, int direction){
     return false;
 }
 
-void Board::checkForRowsComplete(){
-    int currRow = 0;
-    tempArray.resize(GRID_ROWS, vector<Block*>(GRID_COLUMNS,nullptr));
-
+bool Board::checkForRowsComplete(){
     for(int i = 0; i < GRID_ROWS; i++){
-        isRowComplete = true;
-        for(int j = 0; j < GRID_COLUMNS; j++){
-            if(array[i][j] == nullptr){
-                isRowComplete = false;
-                fillTempArray(currRow, i);
-                currRow++;
+        row = i;
+        isComplete = true;
+        for(Block* b : array[i]){
+            if(b == nullptr){
+                isComplete = false;
                 break;
             }
-        }
-        if(isRowComplete){
-            for(Block* block : array[i]){
-                delete[] block;
-                block = nullptr;
-            }
+            return isComplete;
         }
     }
-
-    array = tempArray;
+    return false;
 }
 
-void Board::fillTempArray(int currRow, int rowToAdd){
-    for(int j = 0; j < GRID_COLUMNS; j++){
-        tempArray[currRow][j] = array[rowToAdd][j];
+void Board::clearCompleteRow(int i){
+    for(Block* b : array[i])
+            delete b;
+
+    while(i < 19){
+        for(Block* b : array[i+1])
+            if(b != nullptr)
+                b->drop();
+
+        array[i] = array[i+1];
+        i++;
     }
 }
 

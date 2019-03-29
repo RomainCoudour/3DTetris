@@ -35,8 +35,8 @@ protected:
     bool checkForCollisions();
     bool checkForCollisionsBeforeMoving(int direction);
     bool checkArrayForCollisions(Block* block, int direction);
-    void checkForRowsComplete();
-    void fillTempArray(int currRow, int rowToAdd);
+    bool checkForRowsComplete();
+    void clearCompleteRow(int i);
     void nextMove();
 
 
@@ -46,7 +46,8 @@ private:
     int LOWER_BORDER = 0; // Coord y de la dernière ligneH
     int SIDE_BORDER_LEFT = 0;
     int SIDE_BORDER_RIGHT = 10;
-    bool isRowComplete = false;
+    int row;
+    bool isComplete;
     bool isLost = false;
     bool isOnPause = false;
 
