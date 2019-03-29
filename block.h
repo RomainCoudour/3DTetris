@@ -25,6 +25,7 @@ public:
 
 private:
     int const BLOCK_DIM = 1;
+    const QPoint SPAWN = QPoint(5,20);
 
     QColor mColor;
     QPoint mOrigin;

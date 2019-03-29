@@ -36,6 +36,7 @@ protected:
     bool checkForCollisionsBeforeMoving(int direction);
     void checkForRowsComplete();
     void fillTempArray(int currRow, int rowToAdd);
+    void nextMove();
 
 
 private:

@@ -24,35 +24,35 @@ void Block::displayBlock(){
     glBegin(GL_QUADS);
     glColor3f((float)mColor.redF(), (float)mColor.greenF(), (float)mColor.blueF());
 
-    glVertex3i(mOrigin.x(),mOrigin.y(),0);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y(),0);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y()+BLOCK_DIM,0);
-    glVertex3i(mOrigin.x(),mOrigin.y()+BLOCK_DIM,0);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y(),0);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y(),0);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y()+BLOCK_DIM,0);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y()+BLOCK_DIM,0);
 
-    glVertex3i(mOrigin.x(),mOrigin.y(),1);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y(),1);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y()+BLOCK_DIM,1);
-    glVertex3i(mOrigin.x(),mOrigin.y()+BLOCK_DIM,1);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y(),1);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y(),1);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y()+BLOCK_DIM,1);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y()+BLOCK_DIM,1);
 
-    glVertex3i(mOrigin.x(),mOrigin.y(),1);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y(),1);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y(),0);
-    glVertex3i(mOrigin.x(),mOrigin.y(),0);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y(),1);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y(),1);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y(),0);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y(),0);
 
-    glVertex3i(mOrigin.x(),mOrigin.y()+BLOCK_DIM,0);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y()+BLOCK_DIM,0);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y()+BLOCK_DIM,1);
-    glVertex3i(mOrigin.x(),mOrigin.y()+BLOCK_DIM,1);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y()+BLOCK_DIM,0);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y()+BLOCK_DIM,0);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y()+BLOCK_DIM,1);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y()+BLOCK_DIM,1);
 
-    glVertex3i(mOrigin.x(),mOrigin.y(),1);
-    glVertex3i(mOrigin.x(),mOrigin.y(),0);
-    glVertex3i(mOrigin.x(),mOrigin.y()+BLOCK_DIM,1);
-    glVertex3i(mOrigin.x(),mOrigin.y()+BLOCK_DIM,0);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y(),1);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y(),0);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y()+BLOCK_DIM,1);
+    glVertex3i(SPAWN.x()+mOrigin.x(),SPAWN.y()+mOrigin.y()+BLOCK_DIM,0);
 
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y(),0);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y(),1);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y()+BLOCK_DIM,0);
-    glVertex3i(mOrigin.x()+BLOCK_DIM,mOrigin.y()+BLOCK_DIM,1);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y(),0);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y(),1);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y()+BLOCK_DIM,0);
+    glVertex3i(SPAWN.x()+mOrigin.x()+BLOCK_DIM,SPAWN.y()+mOrigin.y()+BLOCK_DIM,1);
 
 
     glEnd();

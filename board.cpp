@@ -17,8 +17,7 @@ Board::Board(QWidget *parent)
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
 
     curPiece = TetrisFactory::createPiece();
-    //Uncommment and implement when collisions are set
-    //nextPiece = TetrisFactory::createPiece();
+    nextPiece = TetrisFactory::createPiece();
 
     connect(&mTimer,  &QTimer::timeout, [&] {
         if(!isOnPause && !isLost){
@@ -83,16 +82,16 @@ void Board::paintGL()
     glBegin(GL_LINES);
     for(int i=0;i<=10;i++) {
         glColor3f(1,1,1);
-        glVertex3f(i-5,0,0);
-        glVertex3f(i-5,-20,0);
+        glVertex3f(i,0,0);
+        glVertex3f(i,20,0);
     };
     glEnd();
 
     glBegin(GL_LINES);
     for(int i=0;i<=20;i++) {
         glColor3f(1,1,1);
-        glVertex3f(-5,-i,0);
-        glVertex3f(5,-i,0);
+        glVertex3f(0,i,0);
+        glVertex3f(10,i,0);
     };
     glEnd();
 
@@ -159,18 +158,16 @@ void Board::drawBlocks(){
 }
 
 bool Board::checkForCollisions(){
-    // TODO : if piece.x hits x = +-5 = side border
-    // return true
-
-    // TODO : if piece.y hits y = -21 = lower border
     // TODO : if piece hits blocks
     //Transfert les pointeurs vers array, transfert nextPiece, retrun true
 
 
 
     for(Block* block : curPiece.getBlocks()){
-        if (block->getOrigine().y()+block->getYTranslate()-1<-20)
+        if (block->getOrigine().y()+block->getYTranslate()-1<-20){
+            nextMove();
             return true;
+        }
     }
 
     return false;
@@ -248,4 +245,12 @@ void Board::fillTempArray(int currRow, int rowToAdd){
     for(int j = 0; j < GRID_COLUMNS; j++){
         tempArray[currRow][j] = array[rowToAdd][j];
     }
+}
+
+void Board::nextMove(){
+    for(Block* block : curPiece.getBlocks())
+        array[block->getOrigine().x()+block->getXTranslate()][block->getOrigine().y()+block->getYTranslate()] = block;
+
+    curPiece = nextPiece;
+    nextPiece = TetrisFactory::createPiece();
 }
