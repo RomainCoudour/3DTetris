@@ -48,7 +48,7 @@ QColor TetrisFactory::setColor(TetrisShape shape){
 }
 
 vector<QPoint> TetrisFactory::getOrigins(TetrisShape shape){
-    vector<QPoint> origins(PIECE_SIZE);
+    vector<QPoint> origins;
 
     switch (shape) {
     case ZShape:

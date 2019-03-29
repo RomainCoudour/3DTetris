@@ -1,12 +1,12 @@
 #include "tetrispiece.h"
 #include "block.h"
+#include <QDebug>
 
 TetrisPiece::TetrisPiece(){}
 
 TetrisPiece::TetrisPiece(QColor color, vector<QPoint> origins)
 {
     mColor = color;
-    mPiece.reserve(PIECE_SIZE);
     mOrigins = origins;
     createPiece();
 }
@@ -27,6 +27,7 @@ void TetrisPiece::display(){
 
 
 void TetrisPiece::onWebcamEvent(int direction){
+    vector<QPoint> resOrigins;
     switch (direction) {
     case LEFT:
         for(Block* block : mPiece)
@@ -37,8 +38,11 @@ void TetrisPiece::onWebcamEvent(int direction){
             block->goingRight();
         break;
     case ROTATE:
-        for(Block* block : mPiece)
-            block->rotate();
+        for (int i = 0; i < this->mOrigins.size(); i++){
+            mPiece.at(i)->setOrigine(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
+            resOrigins.push_back(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
+        }
+        this->mOrigins = resOrigins;
         break;
 
     default:

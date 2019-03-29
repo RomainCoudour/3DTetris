@@ -17,7 +17,11 @@ public:
     void drop();
     void goingLeft();
     void goingRight();
-    void rotate();
+    void setOrigine(QPoint p);
+    QPoint getOrigine() { return mOrigin; }
+    int getXTranslate() { return xTranslate; }
+    int getYTranslate() { return yTranslate; }
+
 
 private:
     int const BLOCK_DIM = 1;

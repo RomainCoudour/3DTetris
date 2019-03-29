@@ -2,6 +2,7 @@
 #include <GL/glu.h>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDebug>
 
 // Declarations des constantes
 const unsigned int WIN_WIDTH  = 1600;
@@ -21,7 +22,8 @@ Board::Board(QWidget *parent)
 
     connect(&mTimer,  &QTimer::timeout, [&] {
         if(!isOnPause && !isLost){
-            pieceDrop();
+            if(!checkForCollisions())
+                pieceDrop(curPiece);
             updateGL();
         }
     });
@@ -139,8 +141,8 @@ void Board::keyPressEvent(QKeyEvent * event)
         updateGL();
 }
 
-void Board::pieceDrop(){
-    for(Block* block : curPiece.getBlocks())
+void Board::pieceDrop(TetrisPiece piece){
+    for(Block* block : piece.getBlocks())
         block->drop();
 }
 
@@ -164,11 +166,56 @@ bool Board::checkForCollisions(){
     // TODO : if piece hits blocks
     //Transfert les pointeurs vers array, transfert nextPiece, retrun true
 
+
+
+    for(Block* block : curPiece.getBlocks()){
+        if (block->getOrigine().y()+block->getYTranslate()-1<-20)
+            return true;
+    }
+
     return false;
 }
 
 bool Board::checkForCollisionsBeforeMoving(int direction){
     // TODO : if piece might hit a border or a block, return true;
+    // Créer une pièce fictive, la tourner et checker si elle touche les bords
+
+    QPoint points [4];
+
+    switch (direction) {
+
+    case RIGHT:
+        for(Block* block : curPiece.getBlocks()){
+            if (block->getOrigine().x()+block->getXTranslate()+1>4)
+                return true;
+        }
+        break;
+
+    case LEFT:
+        for(Block* block : curPiece.getBlocks()){
+            if (block->getOrigine().x()+block->getXTranslate()-1<-5)
+                return true;
+        }
+        break;
+
+    case ROTATE:
+        //for(Block* block : curPiece.getBlocks()){
+            for (int i = 0; i < curPiece.getOrigins().size(); i++) {
+                points[i] = QPoint(-curPiece.getBlocks().at(i)->getOrigine().y(),curPiece.getBlocks().at(i)->getOrigine().x());
+                if (points[i].x()+curPiece.getBlocks().at(i)->getXTranslate() < -5 || points[i].x() + curPiece.getBlocks().at(i)->getXTranslate()>4 || points[i].y() + curPiece.getBlocks().at(i)->getYTranslate()<-20)
+                    return true;
+            }
+
+            /*if (block->getOrigine().x()+block->getXTranslate()<-5 || block->getOrigine().x()+block->getXTranslate()>4){
+                qDebug() << "Touched";
+                return true;
+           }*/
+        //}
+        break;
+
+    default:
+        break;
+    }
     return false;
 }
 

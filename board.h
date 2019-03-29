@@ -29,7 +29,7 @@ protected:
 
     // METHODS
     void keyPressEvent(QKeyEvent * event);
-    void pieceDrop();
+    void pieceDrop(TetrisPiece piece);
     void initializeGrid();
     void drawBlocks();
     bool checkForCollisions();
