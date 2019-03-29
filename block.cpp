@@ -18,7 +18,6 @@ void Block::displayBlock(){
 
     // Dims : 1x1x1
     // Raw : glVertex3i(mOrigin.x(),mOrigin.y(),0);
-    // /!\ 2D : (x,y) ---> 3D : (y,-z)
     glPushMatrix();
     glTranslated(xTranslate,yTranslate,0);
     glRotated(angle, 0,0,1);

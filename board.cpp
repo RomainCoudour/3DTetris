@@ -20,8 +20,10 @@ Board::Board(QWidget *parent)
     //nextPiece = TetrisFactory::createPiece();
 
     connect(&mTimer,  &QTimer::timeout, [&] {
-        pieceDrop();
-        updateGL();
+        if(!isOnPause && !isLost){
+            pieceDrop();
+            updateGL();
+        }
     });
 
     mTimer.setInterval(1000);
@@ -106,6 +108,7 @@ void Board::paintGL()
 void Board::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
+    if(!isOnPause && !isLost)
     case Qt::Key_Left:
         if(!checkForCollisionsBeforeMoving(LEFT))
             curPiece.onWebcamEvent(LEFT);
@@ -119,14 +122,21 @@ void Board::keyPressEvent(QKeyEvent * event)
         if(!checkForCollisionsBeforeMoving(ROTATE))
             curPiece.onWebcamEvent(ROTATE);
         break;
+    case Qt::Key_P:
+        isOnPause = !isOnPause;
+        if(isOnPause)
+            mTimer.stop();
+        else
+            mTimer.start();
+        break;
     default:
         event->ignore();
         break;
     }
 
     // Acceptation de l'evenement et mise a jour de la scene
-    event->accept();
-    updateGL();
+        event->accept();
+        updateGL();
 }
 
 void Board::pieceDrop(){
@@ -176,12 +186,12 @@ void Board::checkForRowsComplete(){
         for(Block* block : array[i]){
             if(block == nullptr){
                 isRowComplete = false;
-                fillTempArray(curRow, i);
-                curRow++;
+                fillTempArray(currRow, i);
+                currRow++;
                 break;
             }
         }
-        if(isRawComplete){
+        if(isRowComplete){
             for(Block* block : array[i]){
                 delete[] block;
                 block = nullptr;

@@ -26,7 +26,6 @@ public:
 
 private:
     vector<Block*> mPiece;
-
     QColor mColor;
     vector<QPoint> mOrigins;
 };

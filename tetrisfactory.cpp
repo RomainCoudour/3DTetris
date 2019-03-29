@@ -12,7 +12,7 @@ TetrisPiece TetrisFactory::createPiece(){
 }
 
 TetrisShape TetrisFactory::setShape(){
-   return(TetrisShape(QRandomGenerator::global()->bounded(7) + 1));
+    return(TetrisShape(QRandomGenerator::global()->bounded(7) + 1));
 }
 
 QColor TetrisFactory::setColor(TetrisShape shape){
@@ -52,46 +52,53 @@ vector<QPoint> TetrisFactory::getOrigins(TetrisShape shape){
 
     switch (shape) {
     case ZShape:
+        //{ 0, -1 },  { 0, 0 },   { -1, 0 },  { -1, 1 }
+        origins.push_back(QPoint(0,-1));
         origins.push_back(QPoint(0,0));
         origins.push_back(QPoint(-1,0));
-        origins.push_back(QPoint(0,1));
-        origins.push_back(QPoint(1,1));
-        break;
-    case SShape:
-        origins.push_back(QPoint(0,0));
-        origins.push_back(QPoint(1,0));
-        origins.push_back(QPoint(0,1));
         origins.push_back(QPoint(-1,1));
         break;
+    case SShape:
+        //{ 0, -1 },  { 0, 0 },   { 1, 0 },   { 1, 1 }
+        origins.push_back(QPoint(0,-1));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(1,0));
+        origins.push_back(QPoint(1,1));
+        break;
     case LineShape:
+        //{ 0, -1 },  { 0, 0 },   { 0, 1 },   { 0, 2 }
+        origins.push_back(QPoint(0,-1));
         origins.push_back(QPoint(0,0));
         origins.push_back(QPoint(0,1));
         origins.push_back(QPoint(0,2));
-        origins.push_back(QPoint(0,3));
         break;
     case TShape:
+        //{ -1, 0 },  { 0, 0 },   { 1, 0 },   { 0, 1 }
+        origins.push_back(QPoint(-1,0));
         origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(1,0));
         origins.push_back(QPoint(0,1));
-        origins.push_back(QPoint(1,1));
-        origins.push_back(QPoint(-1,1));
         break;
     case SquareShape:
+        //{ 0, 0 },   { 1, 0 },   { 0, 1 },   { 1, 1 }
         origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(1,0));
         origins.push_back(QPoint(0,1));
         origins.push_back(QPoint(1,1));
-        origins.push_back(QPoint(1,0));
         break;
     case LShape:
-        origins.push_back(QPoint(0,0));
+        //{ -1, -1 }, { 0, -1 },  { 0, 0 },   { 0, 1 }
+        origins.push_back(QPoint(-1,1));
         origins.push_back(QPoint(0,-1));
-        origins.push_back(QPoint(1,0));
-        origins.push_back(QPoint(2,0));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(0,1));
         break;
     case MirroredLShape:
-        origins.push_back(QPoint(0,0));
+        //{ 1, -1 },  { 0, -1 },  { 0, 0 },   { 0, 1 }
+        origins.push_back(QPoint(1,-1));
         origins.push_back(QPoint(0,-1));
-        origins.push_back(QPoint(-1,0));
-        origins.push_back(QPoint(-2,0));
+        origins.push_back(QPoint(0,0));
+        origins.push_back(QPoint(0,1));
         break;
     default:
         break;
