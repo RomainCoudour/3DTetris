@@ -23,10 +23,10 @@ public:
     void display();
     void onWebcamEvent(int direction);
     vector<Block*> getBlocks(){return mPiece;}
+    vector<QPoint> getOrigins(){return mOrigins;}
 
 private:
     vector<Block*> mPiece;
-
     QColor mColor;
     vector<QPoint> mOrigins;
 };

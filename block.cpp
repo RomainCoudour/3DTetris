@@ -21,7 +21,6 @@ void Block::displayBlock(){
     // /!\ 2D : (x,y) ---> 3D : (y,-z)
     glPushMatrix();
     glTranslated(xTranslate,yTranslate,0);
-    glRotated(angle, 0,0,1);
 
     glBegin(GL_QUADS);
     glColor3f((float)mColor.redF(), (float)mColor.greenF(), (float)mColor.blueF());
@@ -73,6 +72,6 @@ void Block::goingRight(){
     xTranslate++;
 }
 
-void Block::rotate(){
-    angle += 90;
+void Block::setOrigine(QPoint p){
+    mOrigin = p;
 }

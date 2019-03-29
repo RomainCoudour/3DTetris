@@ -2,6 +2,7 @@
 #include <GL/glu.h>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDebug>
 
 // Declarations des constantes
 const unsigned int WIN_WIDTH  = 1600;
@@ -20,7 +21,10 @@ Board::Board(QWidget *parent)
     //nextPiece = TetrisFactory::createPiece();
 
     connect(&mTimer,  &QTimer::timeout, [&] {
-        pieceDrop();
+        if(!checkForCollisions())
+            //for(Block* block : curPiece.getBlocks())
+
+            pieceDrop(curPiece);
         updateGL();
     });
 
@@ -129,8 +133,8 @@ void Board::keyPressEvent(QKeyEvent * event)
     updateGL();
 }
 
-void Board::pieceDrop(){
-    for(Block* block : curPiece.getBlocks())
+void Board::pieceDrop(TetrisPiece piece){
+    for(Block* block : piece.getBlocks())
         block->drop();
 }
 
@@ -154,11 +158,47 @@ bool Board::checkForCollisions(){
     // TODO : if piece hits blocks
     //Transfert les pointeurs vers array, transfert nextPiece, retrun true
 
+    for(Block* block : curPiece.getBlocks()){
+        if (block->getOrigine().y()+block->getYTranslate()-1<-20)
+            return true;
+    }
+
     return false;
 }
 
 bool Board::checkForCollisionsBeforeMoving(int direction){
     // TODO : if piece might hit a border or a block, return true;
+    // Créer une pièce fictive, la tourner et checker si elle touche les bords
+
+    switch (direction) {
+
+    case RIGHT:
+        for(Block* block : curPiece.getBlocks()){
+            if (block->getOrigine().x()+block->getXTranslate()+1>4)
+                return true;
+        }
+        break;
+
+    case LEFT:
+        for(Block* block : curPiece.getBlocks()){
+            if (block->getOrigine().x()+block->getXTranslate()-1<-5)
+                return true;
+        }
+        break;
+
+    case ROTATE:
+        /*for(Block* block : pieceTest.getBlocks()){
+            //qDebug() << (block->getOrigine().x()+block->getXTranslate()<-5|| block->getOrigine().x()+block->getXTranslate()>4);
+            if (block->getOrigine().x()+block->getXTranslate()<-5 || block->getOrigine().x()+block->getXTranslate()>4){
+                qDebug() << "Touched";
+                return true;
+            }
+        }*/
+        break;
+
+    default:
+        break;
+    }
     return false;
 }
 
@@ -176,12 +216,12 @@ void Board::checkForRowsComplete(){
         for(Block* block : array[i]){
             if(block == nullptr){
                 isRowComplete = false;
-                fillTempArray(curRow, i);
-                curRow++;
+                fillTempArray(currRow, i);
+                currRow++;
                 break;
             }
         }
-        if(isRawComplete){
+        if(isRowComplete){
             for(Block* block : array[i]){
                 delete[] block;
                 block = nullptr;
