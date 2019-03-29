@@ -18,9 +18,11 @@ public:
     void goingLeft();
     void goingRight();
     void setOrigine(QPoint p);
+    void updateOrigin();
     QPoint getOrigine() { return mOrigin; }
     int getXTranslate() { return xTranslate; }
     int getYTranslate() { return yTranslate; }
+    QPoint getCurrOrigin() { return currOrigin; }
 
 
 private:
@@ -29,6 +31,7 @@ private:
 
     QColor mColor;
     QPoint mOrigin;
+    QPoint currOrigin;
     int xTranslate, yTranslate;
     int angle;
 };

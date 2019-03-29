@@ -7,8 +7,6 @@ Block::Block(QColor color, QPoint origin)
 
     xTranslate = 0;
     yTranslate = 0;
-    angle = 0;
-
 }
 
 Block::~Block(){
@@ -57,6 +55,7 @@ void Block::displayBlock(){
 
     glEnd();
     glPopMatrix();
+    updateOrigin();
 }
 
 void Block::drop(){
@@ -73,4 +72,8 @@ void Block::goingRight(){
 
 void Block::setOrigine(QPoint p){
     mOrigin = p;
+}
+
+void Block::updateOrigin(){
+    currOrigin = QPoint(SPAWN.x()+mOrigin.x()+xTranslate, SPAWN.y()+mOrigin.y()+yTranslate);
 }

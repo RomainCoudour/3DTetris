@@ -34,6 +34,7 @@ protected:
     void drawBlocks();
     bool checkForCollisions();
     bool checkForCollisionsBeforeMoving(int direction);
+    bool checkArrayForCollisions(Block block, int direction);
     void checkForRowsComplete();
     void fillTempArray(int currRow, int rowToAdd);
     void nextMove();
@@ -42,8 +43,9 @@ protected:
 private:
     int GRID_COLUMNS = 10;
     int GRID_ROWS = 20;
-    int LOWER_BORDER = -21; // Coord y de la dernière ligneH
-    int SIDE_BORDER = 5; // Coord x de la première/dernière ligneV
+    int LOWER_BORDER = 0; // Coord y de la dernière ligneH
+    int SIDE_BORDER_LEFT = 0;
+    int SIDE_BORDER_RIGHT = 10;
     bool isRowComplete = false;
     bool isLost = false;
     bool isOnPause = false;

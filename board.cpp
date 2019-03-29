@@ -27,7 +27,7 @@ Board::Board(QWidget *parent)
         }
     });
 
-    mTimer.setInterval(1000);
+    mTimer.setInterval(100);
     mTimer.start();
 
     // Grid as array
@@ -95,12 +95,8 @@ void Board::paintGL()
     };
     glEnd();
 
-    // Affichage éléments
-    drawBlocks(); // Dessiner les blocks après le checkForCollisions pour éviter opérations inutiles non ?
-    // checkForCollisions(); // ... a vérifier lors d'un déplacement plutôt ? Et donc renverrait un boolean.
-    //Attention, prendre en compte le déplacement vertical TIMER !
     checkForRowsComplete();
-
+    drawBlocks();
     curPiece.display();
 }
 
@@ -136,8 +132,8 @@ void Board::keyPressEvent(QKeyEvent * event)
     }
 
     // Acceptation de l'evenement et mise a jour de la scene
-        event->accept();
-        updateGL();
+    event->accept();
+    updateGL();
 }
 
 void Board::pieceDrop(TetrisPiece piece){
@@ -151,21 +147,16 @@ void Board::initializeGrid(){
 
 void Board::drawBlocks(){
     for(int i = 0; i < GRID_ROWS; i++)
-        for(Block* block : array[i]){
-            if(block != nullptr)
-                block->displayBlock();
+        for(int j = 0; j < GRID_COLUMNS; j++){
+            if(array[i][j] != nullptr)
+                array[i][j]->displayBlock();
         }
 }
 
 bool Board::checkForCollisions(){
-    // TODO : if piece hits blocks
-    //Transfert les pointeurs vers array, transfert nextPiece, retrun true
-
-
-
     for(Block* block : curPiece.getBlocks()){
-        if (block->getOrigine().y()+block->getYTranslate()-1<-20){
-            nextMove();
+        if(!checkArrayForCollisions(*block, DROP) || block->getCurrOrigin().y()-1 < LOWER_BORDER){
+            //nextMove();
             return true;
         }
     }
@@ -183,14 +174,14 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
 
     case RIGHT:
         for(Block* block : curPiece.getBlocks()){
-            if (block->getOrigine().x()+block->getXTranslate()+1>4)
+            if (block->getCurrOrigin().x()+1 >= SIDE_BORDER_RIGHT)
                 return true;
         }
         break;
 
     case LEFT:
         for(Block* block : curPiece.getBlocks()){
-            if (block->getOrigine().x()+block->getXTranslate()-1<-5)
+            if (block->getCurrOrigin().x()-1 < SIDE_BORDER_LEFT)
                 return true;
         }
         break;
@@ -209,13 +200,36 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
     return false;
 }
 
+bool Board::checkArrayForCollisions(Block block, int direction){
+    QPoint coord = block.getCurrOrigin();
+//    switch (direction) {
+//    case LEFT:
+//        return(array[coord.x()-1][coord.y()] != nullptr);
+//        break;
+//    case RIGHT:
+//        return(array[coord.x()+1][coord.y()] != nullptr);
+//        break;
+//    case DROP:
+//        return(array[coord.x()][coord.y()-1] != nullptr);
+//        break;
+//    case ROTATE:
+//        return(array[coord.x()][coord.y()] != nullptr);
+//        break;
+//    default:
+//        return false;
+//        break;
+//    }
+//    for(int i = 0; i < GRID_ROWS; i++)
+//        for(Block* b : array[i])
+//            if(b == nullptr)
+//                return false;
+//    return true;
+
+    //return(array[coord.x()][coord.y()-1] == nullptr);
+}
+
 void Board::checkForRowsComplete(){
-
-    //TODO : Reste à baisser les lignes pour combler les trous, attention a ne pas changer dynamiquement array dans un for
-    // Possible idée : créer un tableau temporaire et y ajouter les rangs non complets
     int currRow = 0;
-
-    // A mettre dans le constructeur pour appel une fois seulement ? Ou la méthode clear, défonce tout ?
     tempArray.resize(GRID_ROWS, vector<Block*>(GRID_COLUMNS,nullptr));
 
     for(int i = 0; i < GRID_ROWS; i++){
@@ -249,7 +263,7 @@ void Board::fillTempArray(int currRow, int rowToAdd){
 
 void Board::nextMove(){
     for(Block* block : curPiece.getBlocks())
-        array[block->getOrigine().x()+block->getXTranslate()][block->getOrigine().y()+block->getYTranslate()] = block;
+        array[block->getCurrOrigin().x()][block->getCurrOrigin().y()] = block;
 
     curPiece = nextPiece;
     nextPiece = TetrisFactory::createPiece();
