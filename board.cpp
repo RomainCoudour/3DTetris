@@ -137,12 +137,14 @@ void Board::keyPressEvent(QKeyEvent * event)
         mTimer.start();
         break;
     case Qt::Key_Space:
-        mTimer.stop();
-        while(!checkForCollisions()){
-            pieceDrop(curPiece);
-            updateGL();
+        if(!isOnPause){
+            mTimer.stop();
+            while(!checkForCollisions()){
+                pieceDrop(curPiece);
+                updateGL();
+            }
+            mTimer.start();
         }
-        mTimer.start();
         break;
     default:
         event->ignore();
