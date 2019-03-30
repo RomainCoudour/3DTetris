@@ -28,6 +28,7 @@ public:
     void setYTranslate(int Y) { yTranslate = Y; }
     QPoint getCurrOrigin() { return currOrigin; }
     QPoint getSPAWN() { return SPAWN; }
+    void setColor(QColor color) { mColor = color; }
 
 
 private:

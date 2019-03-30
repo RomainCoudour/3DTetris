@@ -8,7 +8,7 @@
 using namespace std;
 
 int const PIECE_SIZE = 4;
-enum TetrisMouvement { LEFT, RIGHT, ROTATE, DROP };
+enum TetrisMouvement { LEFT, RIGHT, ROTATE, DROP , SPAWN};
 enum TetrisShape { NoShape, ZShape, SShape, LineShape, TShape, SquareShape,
                    LShape, MirroredLShape };
 

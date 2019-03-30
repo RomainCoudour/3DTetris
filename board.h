@@ -32,13 +32,14 @@ protected:
     void pieceDrop(TetrisPiece piece);
     void initializeGrid();
     void drawBlocks();
-    bool checkForCollisions();
+    bool checkForCollisions(int type);
     bool checkForCollisionsBeforeMoving(int direction);
     bool checkArrayForCollisions(Block* block, int direction);
     bool checkForRowsComplete();
     void clearCompleteRow(int i);
     void nextMove();
     void reset();
+    bool pieceOutOfBound(TetrisPiece piece);
 
 
 private:
@@ -57,6 +58,7 @@ private:
     TetrisPiece nextPiece;
     vector<vector<Block*>> array;
 
+    QGLWidget *nextPieceFrame;
 };
 
 #endif // BOARD_H

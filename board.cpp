@@ -21,12 +21,13 @@ Board::Board(QWidget *parent)
 
     connect(&mTimer,  &QTimer::timeout, [&] {
         if(!isOnPause && !isLost){
-            if(!checkForCollisions())
+            if(!checkForCollisions(DROP))
                 pieceDrop(curPiece);
             else
                 nextMove();
             updateGL();
         }
+
     });
 
     mTimer.setInterval(1000);
@@ -34,6 +35,10 @@ Board::Board(QWidget *parent)
 
     // Grid as array
     initializeGrid();
+
+    nextPieceFrame = new QGLWidget();
+    nextPieceFrame->setFixedSize(WIN_WIDTH/3,WIN_HEIGHT/3);
+    nextPieceFrame->show();
 }
 
 Board::~Board()
@@ -97,12 +102,17 @@ void Board::paintGL()
     };
     glEnd();
 
+
     while(checkForRowsComplete()){
         clearCompleteRow(row);
     }
 
     drawBlocks();
     curPiece.display();
+    if(isLost){
+        qglColor(QColor(255,255,255));
+        renderText(10.0,0.0,0.0,QString("YOU LOSE"), QFont("Helvetica", 30));
+    }
 }
 
 
@@ -110,19 +120,39 @@ void Board::paintGL()
 void Board::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
-    if(!isOnPause && !isLost)
-    case Qt::Key_Left:
-        if(!checkForCollisionsBeforeMoving(LEFT))
-            curPiece.onWebcamEvent(LEFT);
-        break;
-    case Qt::Key_Right:
-        if(!checkForCollisionsBeforeMoving(RIGHT))
-            curPiece.onWebcamEvent(RIGHT);
-        break;
-    case Qt::Key_Up:
-    case Qt::Key_Down:
-        if(!checkForCollisionsBeforeMoving(ROTATE))
-            curPiece.onWebcamEvent(ROTATE);
+        case Qt::Key_Left:
+            if(!isOnPause && !isLost)
+                if(!checkForCollisionsBeforeMoving(LEFT))
+                    curPiece.onWebcamEvent(LEFT);
+            break;
+        case Qt::Key_Right:
+            if(!isOnPause && !isLost)
+                if(!checkForCollisionsBeforeMoving(RIGHT))
+                    curPiece.onWebcamEvent(RIGHT);
+            break;
+        case Qt::Key_Up:
+        case Qt::Key_Down:
+            if(!isOnPause && !isLost)
+                if(!checkForCollisionsBeforeMoving(ROTATE))
+                    curPiece.onWebcamEvent(ROTATE);
+            break;
+        case Qt::Key_Space:
+            if(!isOnPause && !isLost){
+                mTimer.stop();
+                while(!checkForCollisions(DROP)){
+                    pieceDrop(curPiece);
+                    updateGL();
+                }
+                mTimer.start();
+            }
+            break;
+
+    case Qt::Key_Escape:
+        exit(0);
+    case Qt::Key_R :
+        isLost = false;
+        isOnPause = false;
+        reset();
         break;
     case Qt::Key_P:
         isOnPause = !isOnPause;
@@ -130,21 +160,6 @@ void Board::keyPressEvent(QKeyEvent * event)
             mTimer.stop();
         else
             mTimer.start();
-        break;
-    case Qt::Key_R :
-        mTimer.stop();
-        reset();
-        mTimer.start();
-        break;
-    case Qt::Key_Space:
-        if(!isOnPause){
-            mTimer.stop();
-            while(!checkForCollisions()){
-                pieceDrop(curPiece);
-                updateGL();
-            }
-            mTimer.start();
-        }
         break;
     default:
         event->ignore();
@@ -168,22 +183,33 @@ void Board::initializeGrid(){
 void Board::drawBlocks(){
     for(int i = 0; i < GRID_ROWS; i++)
         for(int j = 0; j < GRID_COLUMNS; j++){
-            if(array[i][j] != nullptr)
+            if(array[i][j] != nullptr){
+                if(isLost)
+                    array[i][j]->setColor(QColor("grey"));
                 array[i][j]->displayBlock();
+            }
         }
 }
 
-bool Board::checkForCollisions(){
+bool Board::checkForCollisions(int type){
     for(Block* block : curPiece.getBlocks()){
-        if(block->getCurrOrigin().y()-1 < LOWER_BORDER || checkArrayForCollisions(block, DROP)){
-            return true;
+        switch (type) {
+        case DROP:
+            if(block->getCurrOrigin().y()-1 < LOWER_BORDER || checkArrayForCollisions(block, DROP))
+                return true;
+            break;
+
+        case SPAWN:
+            if(checkArrayForCollisions(block, SPAWN))
+                return true;
+        default:
+            break;
         }
     }
     return false;
 }
 
 bool Board::checkForCollisionsBeforeMoving(int direction){
-    QPoint points [4];
 
     switch (direction) {
 
@@ -242,6 +268,9 @@ bool Board::checkArrayForCollisions(Block* block, int direction){
         case ROTATE:
             return(array[coord.y()][coord.x()] != nullptr);
             break;
+        case SPAWN:
+            return(array[coord.y()][coord.x()] != nullptr);
+            break;
         default:
             return false;
             break;
@@ -281,13 +310,41 @@ void Board::clearCompleteRow(int i){
 }
 
 void Board::nextMove(){
-    for(Block* block : curPiece.getBlocks())
-        array[block->getCurrOrigin().y()][block->getCurrOrigin().x()] = block;
+    if(!pieceOutOfBound(curPiece)){
+        for(Block* block : curPiece.getBlocks())
+            array[block->getCurrOrigin().y()][block->getCurrOrigin().x()] = block;
 
-    curPiece = nextPiece;
-    nextPiece = TetrisFactory::createPiece();
+        curPiece = nextPiece;
+        nextPiece = TetrisFactory::createPiece();
+
+        if(checkForCollisions(SPAWN)){
+            isLost = !isLost;
+        }
+    }
+    else{
+        isLost = !isLost;
+    }
 }
 
 void Board::reset(){
+    mTimer.stop();
 
+    for(int i = 0; i < GRID_ROWS; i++)
+        for(int j = 0; j < GRID_COLUMNS; j++){
+            array[i][j] = nullptr;
+        }
+
+    curPiece = TetrisFactory::createPiece();
+    nextPiece = TetrisFactory::createPiece();
+
+    updateGL();
+
+    mTimer.start();
+}
+
+bool Board::pieceOutOfBound(TetrisPiece piece){
+    for(Block* block : piece.getBlocks())
+        if(block->getCurrOrigin().y() >= 20)
+            return true;
+    return false;
 }

@@ -7,6 +7,7 @@ Block::Block(QColor color, QPoint origin)
 
     xTranslate = 0;
     yTranslate = 0;
+    updateOrigin();
 }
 
 Block::~Block(){
