@@ -29,7 +29,7 @@ Board::Board(QWidget *parent)
         }
     });
 
-    mTimer.setInterval(100);
+    mTimer.setInterval(1000);
     mTimer.start();
 
     // Grid as array
@@ -201,12 +201,32 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
 
     case ROTATE:
         for(Block* block : curPiece.getBlocks()){
-            // Duplication des origines de la pièce courrante. Application de la formule de rotation sur cette duplication.
-            // On récupère les coordonnées comme un block->getCurrOrigin sauf qu'il faut prendre les origines dupliquées et non celle
-            // de la pièce courrante.
-            QPoint p(-block->getOrigine().y()+block->getSPAWN().x()+block->getXTranslate(), block->getOrigine().x()+block->getSPAWN().y()+block->getYTranslate());
-            if (p.x() < SIDE_BORDER_LEFT || p.x() >= SIDE_BORDER_RIGHT || p.y()< LOWER_BORDER)
+            // Dublication du block courant avec une couleur "random". On tourne le dupliqué et on check si ses coordonnées touchent
+            // les bords de la grille ou les blocks existants.
+
+            Block* blockTest = new Block(QColor("red"),block->getOrigine());
+            blockTest->setXTranslate(block->getXTranslate());
+            blockTest->setYTranslate(block->getYTranslate());
+            blockTest->rotate();
+            blockTest->updateOrigin();
+            if (blockTest->getCurrOrigin().x() < SIDE_BORDER_LEFT || blockTest->getCurrOrigin().x() >= SIDE_BORDER_RIGHT || blockTest->getCurrOrigin().y() < LOWER_BORDER || checkArrayForCollisions(blockTest, ROTATE)){
+                blockTest->~Block();
                 return true;
+            }
+            blockTest->~Block();
+
+            /*Block* blockTest = new Block(QColor("red"),QPoint(-block->getOrigine().y()+block->getSPAWN().x()+block->getXTranslate(), block->getOrigine().x()+block->getSPAWN().y()+block->getYTranslate()));
+            if (blockTest->getOrigine().x() < SIDE_BORDER_LEFT || blockTest->getOrigine().x() >= SIDE_BORDER_RIGHT || blockTest->getOrigine().y() < LOWER_BORDER || checkArrayForCollisions(blockTest, ROTATE)){
+                blockTest->~Block();
+                return true;
+            }
+            blockTest->~Block();*/
+
+            /*QPoint p(-block->getOrigine().y()+block->getSPAWN().x()+block->getXTranslate(), block->getOrigine().x()+block->getSPAWN().y()+block->getYTranslate());
+            Block* blockTest = new Block(QColor ("red"), p);
+            if (p.x() < SIDE_BORDER_LEFT || p.x() >= SIDE_BORDER_RIGHT || p.y()< LOWER_BORDER){
+                return true;
+            }*/
         }
         break;
 
@@ -218,6 +238,7 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
 
 bool Board::checkArrayForCollisions(Block* block, int direction){
     QPoint coord = block->getCurrOrigin();
+
     if(coord.y() < GRID_ROWS && coord.y() > LOWER_BORDER && coord.x() > SIDE_BORDER_LEFT && coord.x() < SIDE_BORDER_RIGHT){
         switch (direction) {
         case LEFT:
@@ -230,6 +251,7 @@ bool Board::checkArrayForCollisions(Block* block, int direction){
             return(array[coord.y()-1][coord.x()] != nullptr);
             break;
         case ROTATE:
+            qDebug() << (array[coord.y()][coord.x()] != nullptr);
             return(array[coord.y()][coord.x()] != nullptr);
             break;
         default:

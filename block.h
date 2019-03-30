@@ -18,11 +18,14 @@ public:
     void goingLeft();
     void goingRight();
     void rotate();
-    void setOrigine(QPoint p);
     void updateOrigin();
+
     QPoint getOrigine() { return mOrigin; }
+    void setOrigine(QPoint p);
     int getXTranslate() { return xTranslate; }
+    void setXTranslate(int X) { xTranslate = X; }
     int getYTranslate() { return yTranslate; }
+    void setYTranslate(int Y) { yTranslate = Y; }
     QPoint getCurrOrigin() { return currOrigin; }
     QPoint getSPAWN() { return SPAWN; }
 
