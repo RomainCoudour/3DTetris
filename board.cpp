@@ -201,8 +201,8 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
 
     case ROTATE:
         for(Block* block : curPiece.getBlocks()){
-            // Dublication du block courant avec une couleur "random". On tourne le dupliqué et on check si ses coordonnées touchent
-            // les bords de la grille ou les blocks existants.
+            // Dublication du block courant avec une couleur "random" et toutes ses caractéristiques. On tourne le dupliqué
+            // et on check si ses coordonnées touchent les bords de la grille ou les blocks existants.
 
             Block* blockTest = new Block(QColor("red"),block->getOrigine());
             blockTest->setXTranslate(block->getXTranslate());
