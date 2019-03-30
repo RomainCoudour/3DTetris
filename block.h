@@ -17,12 +17,14 @@ public:
     void drop();
     void goingLeft();
     void goingRight();
+    void rotate();
     void setOrigine(QPoint p);
     void updateOrigin();
     QPoint getOrigine() { return mOrigin; }
     int getXTranslate() { return xTranslate; }
     int getYTranslate() { return yTranslate; }
     QPoint getCurrOrigin() { return currOrigin; }
+    QPoint getSPAWN() { return SPAWN; }
 
 
 private:

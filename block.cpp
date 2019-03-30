@@ -70,6 +70,10 @@ void Block::goingRight(){
     xTranslate++;
 }
 
+void Block::rotate(){
+    setOrigine(QPoint(-mOrigin.y(), mOrigin.x()));
+}
+
 void Block::setOrigine(QPoint p){
     mOrigin = p;
 }

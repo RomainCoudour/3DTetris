@@ -40,11 +40,8 @@ void TetrisPiece::onWebcamEvent(int direction){
         break;
     case ROTATE:
         if(mShape != SquareShape){
-            for (int i = 0; i < this->mOrigins.size(); i++){
-                mPiece.at(i)->setOrigine(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
-                resOrigins.push_back(QPoint(-this->mOrigins.at(i).y(),this->mOrigins.at(i).x()));
-            }
-            this->mOrigins = resOrigins;
+            for(Block* block : mPiece)
+                block->rotate();
         }
         break;
 

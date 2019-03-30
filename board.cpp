@@ -200,9 +200,12 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
         break;
 
     case ROTATE:
-        for (int i = 0; i < curPiece.getOrigins().size(); i++) {
-            points[i] = QPoint(-curPiece.getBlocks().at(i)->getOrigine().y(),curPiece.getBlocks().at(i)->getOrigine().x());
-            if (points[i].x()+curPiece.getBlocks().at(i)->getXTranslate() < -5 || points[i].x() + curPiece.getBlocks().at(i)->getXTranslate()>4 || points[i].y() + curPiece.getBlocks().at(i)->getYTranslate()<-20)
+        for(Block* block : curPiece.getBlocks()){
+            // Duplication des origines de la pièce courrante. Application de la formule de rotation sur cette duplication.
+            // On récupère les coordonnées comme un block->getCurrOrigin sauf qu'il faut prendre les origines dupliquées et non celle
+            // de la pièce courrante.
+            QPoint p(-block->getOrigine().y()+block->getSPAWN().x()+block->getXTranslate(), block->getOrigine().x()+block->getSPAWN().y()+block->getYTranslate());
+            if (p.x() < SIDE_BORDER_LEFT || p.x() >= SIDE_BORDER_RIGHT || p.y()< LOWER_BORDER)
                 return true;
         }
         break;
