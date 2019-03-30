@@ -40,11 +40,13 @@ SOURCES += \
     tetrixpiece.cpp \
     block.cpp \
     tetrisfactory.cpp \
-    tetrispiece.cpp
+    tetrispiece.cpp \
+    piecewindow.cpp
 
 HEADERS += \
         board.h \
     tetrixpiece.h \
     block.h \
     tetrisfactory.h \
-    tetrispiece.h
+    tetrispiece.h \
+    piecewindow.h

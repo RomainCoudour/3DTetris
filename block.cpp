@@ -18,6 +18,7 @@ void Block::displayBlock(){
     // Dims : 1x1x1
     // Raw : glVertex3i(mOrigin.x(),mOrigin.y(),0);
     glPushMatrix();
+
     glTranslated(xTranslate,yTranslate,0);
 
     glBegin(GL_QUADS);

@@ -10,6 +10,7 @@
 #include "tetrisfactory.h"
 #include "tetrispiece.h"
 #include "block.h"
+//#include "piecewindow.h"
 
 using namespace std;
 
@@ -58,7 +59,8 @@ private:
     TetrisPiece nextPiece;
     vector<vector<Block*>> array;
 
-    QGLWidget *nextPieceFrame;
-};
+    //PieceWindow* pWindow;
+
+    };
 
 #endif // BOARD_H
