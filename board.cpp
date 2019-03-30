@@ -216,19 +216,6 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
                 return true;
             }
             blockTest->~Block();
-
-            /*Block* blockTest = new Block(QColor("red"),QPoint(-block->getOrigine().y()+block->getSPAWN().x()+block->getXTranslate(), block->getOrigine().x()+block->getSPAWN().y()+block->getYTranslate()));
-            if (blockTest->getOrigine().x() < SIDE_BORDER_LEFT || blockTest->getOrigine().x() >= SIDE_BORDER_RIGHT || blockTest->getOrigine().y() < LOWER_BORDER || checkArrayForCollisions(blockTest, ROTATE)){
-                blockTest->~Block();
-                return true;
-            }
-            blockTest->~Block();*/
-
-            /*QPoint p(-block->getOrigine().y()+block->getSPAWN().x()+block->getXTranslate(), block->getOrigine().x()+block->getSPAWN().y()+block->getYTranslate());
-            Block* blockTest = new Block(QColor ("red"), p);
-            if (p.x() < SIDE_BORDER_LEFT || p.x() >= SIDE_BORDER_RIGHT || p.y()< LOWER_BORDER){
-                return true;
-            }*/
         }
         break;
 
@@ -253,7 +240,6 @@ bool Board::checkArrayForCollisions(Block* block, int direction){
             return(array[coord.y()-1][coord.x()] != nullptr);
             break;
         case ROTATE:
-            qDebug() << (array[coord.y()][coord.x()] != nullptr);
             return(array[coord.y()][coord.x()] != nullptr);
             break;
         default:
