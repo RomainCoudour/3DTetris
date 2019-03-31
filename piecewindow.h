@@ -18,7 +18,8 @@ protected:
     void paintGL();
 
 public:
-    PieceWindow(TetrisPiece piece);
+    PieceWindow(QWidget *parent, TetrisPiece piece);
+    ~PieceWindow();
     void setPiece(TetrisPiece p) { mPiece = p; }
     void keyPressEvent(QKeyEvent * event);
 

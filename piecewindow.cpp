@@ -4,17 +4,20 @@ const unsigned int WIN_WIDTH  = 600;
 const unsigned int WIN_HEIGHT = 600;
 const float MAX_DIMENSION     = 50.0f;
 
-PieceWindow::PieceWindow(TetrisPiece piece)
+PieceWindow::PieceWindow(QWidget *parent, TetrisPiece piece)
+    : QGLWidget(parent)
 {
     mPiece = piece;
-    setFixedSize(WIN_WIDTH,WIN_HEIGHT);
-    move(QApplication::desktop()->screen()->rect().center() - rect().center());
+    //setFixedSize(WIN_WIDTH,WIN_HEIGHT);
+    //move(QApplication::desktop()->screen()->rect().center() - rect().center());
 }
+
+PieceWindow::~PieceWindow(){}
 
 void PieceWindow::initializeGL()
 {
     // Reglage de la couleur de fond
-    glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+    glClearColor(0.8f, 0.8f, 0.8f, 0.0f);
 
     // Activation du zbuffer
     glEnable(GL_DEPTH_TEST);
@@ -53,8 +56,8 @@ void PieceWindow::paintGL()
     // Definition de la matrice modelview
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt( 6, 22, 5, // position de la caméra
-    5, 21, 0, // position du point que fixe la caméra
+    gluLookAt( 5.5, 21, 4, // position de la caméra
+    5.5, 21, 0, // position du point que fixe la caméra
     0, 1, 0); // vecteur vertical
 
     mPiece.display();

@@ -13,8 +13,8 @@ Board::Board(QWidget *parent)
     : QGLWidget(parent)
 {
     // Reglage de la taille/position
-    setFixedSize(WIN_WIDTH, WIN_HEIGHT);
-    move(QApplication::desktop()->screen()->rect().center() - rect().center());
+    //setFixedSize(WIN_WIDTH, WIN_HEIGHT);
+    //move(QApplication::desktop()->screen()->rect().center() - rect().center());
 
     curPiece = TetrisFactory::createPiece();
     nextPiece = TetrisFactory::createPiece();
@@ -35,8 +35,8 @@ Board::Board(QWidget *parent)
 
     // Grid as array
     initializeGrid();
-    pWindow = new PieceWindow(nextPiece);
-    pWindow->show();
+    pWindow = new PieceWindow(parent, nextPiece);
+    mScore = new int(0);
 }
 
 Board::~Board()
@@ -79,7 +79,6 @@ void Board::resizeGL(int width, int height)
 // Fonction d'affichage
 void Board::paintGL()
 {
-
     // Reinitialisation des tampons
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -100,7 +99,7 @@ void Board::paintGL()
     };
     glEnd();
 
-/*    glMatrixMode( GL_PROJECTION ); // Bien veiller à sélectionner la matrice GL_PROJECTION
+    glMatrixMode( GL_PROJECTION ); // Bien veiller à sélectionner la matrice GL_PROJECTION
     glLoadIdentity( ); // La reinitialiser, on ne sait jamais
     gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, -1., 2.); // Définir les paramètres pour notre projection orthographique
 
@@ -109,7 +108,7 @@ void Board::paintGL()
     glLoadIdentity();
     gluLookAt( 5, 0, 12, // position de la caméra
     5, 7, 0, // position du point que fixe la caméra
-    0, 1, 0); // vecteur vertical*/
+    0, 1, 0); // vecteur vertical
 
     while(checkForRowsComplete()){
         clearCompleteRow(row);
@@ -123,10 +122,47 @@ void Board::paintGL()
         renderText(2.0,10.0,0.0,QString("YOU LOSE"), QFont("Helvetica", 30));
         renderText(1.0,8.0,0.0,QString("Press R to retry"), QFont("Helvetica", 30));
     }
+    //Dessin de la nextpiece
+    pWindow->setPiece(nextPiece);
+    pWindow->updateGL();
 }
 
 
 // Fonction de gestion d'interactions clavier
+
+void Board::tetrisMove(int move){
+    switch (move) {
+        case LEFT:
+            if(!isOnPause && !isLost)
+                if(!checkForCollisionsBeforeMoving(LEFT))
+                    curPiece.onWebcamEvent(LEFT);
+            break;
+        case RIGHT:
+            if(!isOnPause && !isLost)
+                if(!checkForCollisionsBeforeMoving(RIGHT))
+                    curPiece.onWebcamEvent(RIGHT);
+            break;
+        case ROTATE:
+            if(!isOnPause && !isLost)
+                if(!checkForCollisionsBeforeMoving(ROTATE))
+                    curPiece.onWebcamEvent(ROTATE);
+            break;
+        case DROP:
+            if(!isOnPause && !isLost){
+                mTimer.stop();
+                while(!checkForCollisions(DROP)){
+                    pieceDrop(curPiece);
+                    updateGL();
+                }
+                mTimer.start();
+            }
+            break;
+        case NOTHING:
+            break;
+    }
+    updateGL();
+}
+
 void Board::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
@@ -157,8 +193,6 @@ void Board::keyPressEvent(QKeyEvent * event)
             }
             break;
 
-    case Qt::Key_Escape:
-        exit(0);
     case Qt::Key_R :
         isLost = false;
         isOnPause = false;
@@ -317,6 +351,7 @@ void Board::clearCompleteRow(int i){
         array[i] = array[i+1];
         i++;
     }
+    *mScore = *mScore+1;
 }
 
 void Board::nextMove(){
@@ -326,8 +361,6 @@ void Board::nextMove(){
 
         curPiece = nextPiece;
         nextPiece = TetrisFactory::createPiece();
-        pWindow->setPiece(nextPiece);
-        pWindow->updateGL();
 
         if(checkForCollisions(SPAWN)){
             isLost = !isLost;

@@ -21,6 +21,12 @@ class Board : public QGLWidget
 public:
     Board(QWidget *parent = 0);
     ~Board();
+    TetrisPiece getNextPiece() { return nextPiece; }
+    PieceWindow* getPieceWindow() { return pWindow; }
+    void setPieceWindow(PieceWindow* pw) { pWindow = pw; }
+    void keyPressEvent(QKeyEvent * event);
+    void tetrisMove(int move);
+    int* getScore() { return mScore; }
 
 protected:
     // GL METHODS
@@ -29,7 +35,7 @@ protected:
     void paintGL();
 
     // METHODS
-    void keyPressEvent(QKeyEvent * event);
+    //void keyPressEvent(QKeyEvent * event);
     void pieceDrop(TetrisPiece piece);
     void initializeGrid();
     void drawBlocks();
@@ -50,6 +56,7 @@ private:
     int SIDE_BORDER_LEFT = 0;
     int SIDE_BORDER_RIGHT = 10;
     int row;
+    int* mScore;
     bool isComplete = false;
     bool isLost = false;
     bool isOnPause = false;
@@ -60,7 +67,6 @@ private:
     vector<vector<Block*>> array;
 
     PieceWindow* pWindow;
-
     };
 
 #endif // BOARD_H
