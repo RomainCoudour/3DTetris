@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QTimer>
 
 class PieceWindow : public QGLWidget
 {
@@ -23,7 +24,6 @@ public:
 
 private:
     TetrisPiece mPiece;
-    float zoom;
 };
 
 #endif // PIECEWINDOW_H

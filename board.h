@@ -10,7 +10,7 @@
 #include "tetrisfactory.h"
 #include "tetrispiece.h"
 #include "block.h"
-//#include "piecewindow.h"
+#include "piecewindow.h"
 
 using namespace std;
 
@@ -59,7 +59,7 @@ private:
     TetrisPiece nextPiece;
     vector<vector<Block*>> array;
 
-    //PieceWindow* pWindow;
+    PieceWindow* pWindow;
 
     };
 

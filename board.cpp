@@ -35,8 +35,8 @@ Board::Board(QWidget *parent)
 
     // Grid as array
     initializeGrid();
-    //pWindow = new PieceWindow(nextPiece);
-    //pWindow->show();
+    pWindow = new PieceWindow(nextPiece);
+    pWindow->show();
 }
 
 Board::~Board()
@@ -100,7 +100,7 @@ void Board::paintGL()
     };
     glEnd();
 
-    glMatrixMode( GL_PROJECTION ); // Bien veiller à sélectionner la matrice GL_PROJECTION
+/*    glMatrixMode( GL_PROJECTION ); // Bien veiller à sélectionner la matrice GL_PROJECTION
     glLoadIdentity( ); // La reinitialiser, on ne sait jamais
     gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, -1., 2.); // Définir les paramètres pour notre projection orthographique
 
@@ -109,7 +109,7 @@ void Board::paintGL()
     glLoadIdentity();
     gluLookAt( 5, 0, 12, // position de la caméra
     5, 7, 0, // position du point que fixe la caméra
-    0, 1, 0); // vecteur vertical
+    0, 1, 0); // vecteur vertical*/
 
     while(checkForRowsComplete()){
         clearCompleteRow(row);
@@ -118,6 +118,7 @@ void Board::paintGL()
     drawBlocks();
     curPiece.display();
     if(isLost){
+        glClearColor(0.7f, 0.7f, 0.1f, 0.7f);
         qglColor(QColor(255,0,0));
         renderText(2.0,10.0,0.0,QString("YOU LOSE"), QFont("Helvetica", 30));
         renderText(1.0,8.0,0.0,QString("Press R to retry"), QFont("Helvetica", 30));
@@ -263,7 +264,7 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
 bool Board::checkArrayForCollisions(Block* block, int direction){
     QPoint coord = block->getCurrOrigin();
 
-    if(coord.y() < GRID_ROWS && coord.y() > LOWER_BORDER && coord.x() > SIDE_BORDER_LEFT && coord.x() < SIDE_BORDER_RIGHT){
+    if(coord.y() < GRID_ROWS && coord.y() > LOWER_BORDER && coord.x() >= SIDE_BORDER_LEFT && coord.x() < SIDE_BORDER_RIGHT){
         switch (direction) {
         case LEFT:
             return(array[coord.y()][coord.x()-1] != nullptr);
@@ -325,8 +326,8 @@ void Board::nextMove(){
 
         curPiece = nextPiece;
         nextPiece = TetrisFactory::createPiece();
-        //pWindow->setPiece(nextPiece);
-        //pWindow->updateGL();
+        pWindow->setPiece(nextPiece);
+        pWindow->updateGL();
 
         if(checkForCollisions(SPAWN)){
             isLost = !isLost;

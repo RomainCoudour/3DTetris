@@ -7,7 +7,6 @@ const float MAX_DIMENSION     = 50.0f;
 PieceWindow::PieceWindow(TetrisPiece piece)
 {
     mPiece = piece;
-    zoom = 0.0;
     setFixedSize(WIN_WIDTH,WIN_HEIGHT);
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
 }
@@ -65,7 +64,6 @@ void PieceWindow::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
         case Qt::Key_Z:
-            zoom++;
             break;
     default:
         event->ignore();
