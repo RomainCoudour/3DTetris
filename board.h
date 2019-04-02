@@ -52,9 +52,10 @@ protected:
 private:
     int GRID_COLUMNS = 10;
     int GRID_ROWS = 20;
-    int LOWER_BORDER = 0; // Coord y de la dernière ligneH
+    int LOWER_BORDER = 0;
     int SIDE_BORDER_LEFT = 0;
     int SIDE_BORDER_RIGHT = 10;
+
     int row;
     int* mScore;
     bool isComplete = false;

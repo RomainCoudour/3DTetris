@@ -12,12 +12,10 @@ const float MAX_DIMENSION     = 50.0f;
 Board::Board(QWidget *parent)
     : QGLWidget(parent)
 {
-    // Reglage de la taille/position
-    //setFixedSize(WIN_WIDTH, WIN_HEIGHT);
-    //move(QApplication::desktop()->screen()->rect().center() - rect().center());
-
     curPiece = TetrisFactory::createPiece();
     nextPiece = TetrisFactory::createPiece();
+    pWindow = new PieceWindow(parent, nextPiece);
+    mScore = new int(0);
 
     connect(&mTimer,  &QTimer::timeout, [&] {
         if(!isOnPause && !isLost){
@@ -33,36 +31,26 @@ Board::Board(QWidget *parent)
     mTimer.setInterval(1000);
     mTimer.start();
 
-    // Grid as array
     initializeGrid();
-    pWindow = new PieceWindow(parent, nextPiece);
-    mScore = new int(0);
 }
 
 Board::~Board()
 {
-    // TODO : NoMemoryLeak
+    delete pWindow;
+    delete mScore;
 }
 
-
-// Fonction d'initialisation
 void Board::initializeGL()
 {
-    // Reglage de la couleur de fond
-    glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 
-    // Activation du zbuffer
+    glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 }
 
-
-// Fonction de redimensionnement
 void Board::resizeGL(int width, int height)
 {
-    // Definition du viewport (zone d'affichage)
     glViewport(0, 0, width, height);
 
-    // Definition de la matrice de projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -75,11 +63,8 @@ void Board::resizeGL(int width, int height)
 
 }
 
-
-// Fonction d'affichage
 void Board::paintGL()
 {
-    // Reinitialisation des tampons
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Affichage grille jeu
@@ -99,11 +84,10 @@ void Board::paintGL()
     };
     glEnd();
 
-    glMatrixMode( GL_PROJECTION ); // Bien veiller à sélectionner la matrice GL_PROJECTION
-    glLoadIdentity( ); // La reinitialiser, on ne sait jamais
-    gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, -1., 2.); // Définir les paramètres pour notre projection orthographique
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity( );
+    gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, -1., 2.);
 
-    // Definition de la matrice modelview
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt( 5, 0, 12, // position de la caméra
@@ -117,81 +101,76 @@ void Board::paintGL()
     drawBlocks();
     curPiece.display();
     if(isLost){
-        glClearColor(0.7f, 0.7f, 0.1f, 0.7f);
         qglColor(QColor(255,0,0));
         renderText(2.0,10.0,0.0,QString("YOU LOSE"), QFont("Helvetica", 30));
         renderText(1.0,8.0,0.0,QString("Press R to retry"), QFont("Helvetica", 30));
     }
-    //Dessin de la nextpiece
+
     pWindow->setPiece(nextPiece);
     pWindow->updateGL();
 }
 
-
-// Fonction de gestion d'interactions clavier
-
 void Board::tetrisMove(int move){
-    switch (move) {
+    if(!isOnPause && !isLost){
+        switch (move) {
         case LEFT:
-            if(!isOnPause && !isLost)
-                if(!checkForCollisionsBeforeMoving(LEFT))
-                    curPiece.onWebcamEvent(LEFT);
+
+            if(!checkForCollisionsBeforeMoving(LEFT))
+                curPiece.onWebcamEvent(LEFT);
             break;
         case RIGHT:
-            if(!isOnPause && !isLost)
-                if(!checkForCollisionsBeforeMoving(RIGHT))
-                    curPiece.onWebcamEvent(RIGHT);
+            if(!checkForCollisionsBeforeMoving(RIGHT))
+                curPiece.onWebcamEvent(RIGHT);
             break;
         case ROTATE:
-            if(!isOnPause && !isLost)
-                if(!checkForCollisionsBeforeMoving(ROTATE))
-                    curPiece.onWebcamEvent(ROTATE);
+            if(!checkForCollisionsBeforeMoving(ROTATE))
+                curPiece.onWebcamEvent(ROTATE);
             break;
         case DROP:
-            if(!isOnPause && !isLost){
-                mTimer.stop();
-                while(!checkForCollisions(DROP)){
-                    pieceDrop(curPiece);
-                    updateGL();
-                }
-                mTimer.start();
+            mTimer.stop();
+            while(!checkForCollisions(DROP)){
+                pieceDrop(curPiece);
+                updateGL();
             }
+            mTimer.start();
+
             break;
         case NOTHING:
             break;
+        }
+        updateGL();
     }
-    updateGL();
 }
 
 void Board::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
-        case Qt::Key_Left:
-            if(!isOnPause && !isLost)
-                if(!checkForCollisionsBeforeMoving(LEFT))
-                    curPiece.onWebcamEvent(LEFT);
-            break;
-        case Qt::Key_Right:
-            if(!isOnPause && !isLost)
-                if(!checkForCollisionsBeforeMoving(RIGHT))
-                    curPiece.onWebcamEvent(RIGHT);
-            break;
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-            if(!isOnPause && !isLost)
-                if(!checkForCollisionsBeforeMoving(ROTATE))
-                    curPiece.onWebcamEvent(ROTATE);
-            break;
-        case Qt::Key_Space:
-            if(!isOnPause && !isLost){
-                mTimer.stop();
-                while(!checkForCollisions(DROP)){
-                    pieceDrop(curPiece);
-                    updateGL();
-                }
-                mTimer.start();
+    case Qt::Key_Left:
+        if(!isOnPause && !isLost)
+            if(!checkForCollisionsBeforeMoving(LEFT))
+                curPiece.onWebcamEvent(LEFT);
+        break;
+    case Qt::Key_Right:
+        if(!isOnPause && !isLost)
+            if(!checkForCollisionsBeforeMoving(RIGHT))
+                curPiece.onWebcamEvent(RIGHT);
+        break;
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+        if(!isOnPause && !isLost)
+            if(!checkForCollisionsBeforeMoving(ROTATE))
+                curPiece.onWebcamEvent(ROTATE);
+        break;
+    case Qt::Key_Space:
+        if(!isOnPause && !isLost){
+            mTimer.stop();
+            while(!checkForCollisions(DROP)){
+                pieceDrop(curPiece);
+                updateGL();
             }
-            break;
+            mTimer.start();
+        }
+        break;
 
     case Qt::Key_R :
         isLost = false;
@@ -210,7 +189,6 @@ void Board::keyPressEvent(QKeyEvent * event)
         break;
     }
 
-    // Acceptation de l'evenement et mise a jour de la scene
     event->accept();
     updateGL();
 }
@@ -276,7 +254,7 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
             // Dublication du block courant avec une couleur "random" et toutes ses caractéristiques. On tourne le dupliqué
             // et on check si ses coordonnées touchent les bords de la grille ou les blocks existants.
 
-            Block* blockTest = new Block(QColor("red"),block->getOrigine());
+            Block* blockTest = new Block(QColor("red"),block->getOrigin());
             blockTest->setXTranslate(block->getXTranslate());
             blockTest->setYTranslate(block->getYTranslate());
             blockTest->rotate();
@@ -351,6 +329,8 @@ void Board::clearCompleteRow(int i){
         array[i] = array[i+1];
         i++;
     }
+
+    // TODO : emit signal
     *mScore = *mScore+1;
 }
 

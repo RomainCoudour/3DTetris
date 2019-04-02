@@ -78,4 +78,5 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
 WebCam::~WebCam()
 {
     delete webCam_;
+    delete mLabel;
 }

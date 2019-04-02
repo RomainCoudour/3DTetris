@@ -15,10 +15,9 @@ Block::~Block(){
 
 void Block::displayBlock(){
 
-    // Dims : 1x1x1
-    // Raw : glVertex3i(mOrigin.x(),mOrigin.y(),0);
     glPushMatrix();
 
+    // Use currOrigin ?
     glTranslated(xTranslate,yTranslate,0);
 
     glBegin(GL_QUADS);
@@ -73,10 +72,10 @@ void Block::goingRight(){
 }
 
 void Block::rotate(){
-    setOrigine(QPoint(-mOrigin.y(), mOrigin.x()));
+    setOrigin(QPoint(-mOrigin.y(), mOrigin.x()));
 }
 
-void Block::setOrigine(QPoint p){
+void Block::setOrigin(QPoint p){
     mOrigin = p;
 }
 

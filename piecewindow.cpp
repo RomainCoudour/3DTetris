@@ -8,29 +8,20 @@ PieceWindow::PieceWindow(QWidget *parent, TetrisPiece piece)
     : QGLWidget(parent)
 {
     mPiece = piece;
-    //setFixedSize(WIN_WIDTH,WIN_HEIGHT);
-    //move(QApplication::desktop()->screen()->rect().center() - rect().center());
 }
 
 PieceWindow::~PieceWindow(){}
 
 void PieceWindow::initializeGL()
 {
-    // Reglage de la couleur de fond
     glClearColor(0.8f, 0.8f, 0.8f, 0.0f);
-
-    // Activation du zbuffer
     glEnable(GL_DEPTH_TEST);
 }
 
-
-// Fonction de redimensionnement
 void PieceWindow::resizeGL(int width, int height)
 {
-    // Definition du viewport (zone d'affichage)
     glViewport(0, 0, width, height);
 
-    // Definition de la matrice de projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -41,19 +32,14 @@ void PieceWindow::resizeGL(int width, int height)
     glLoadIdentity();
 }
 
-
-// Fonction d'affichage
 void PieceWindow::paintGL()
 {
-
-    // Reinitialisation des tampons
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode( GL_PROJECTION ); // Bien veiller à sélectionner la matrice GL_PROJECTION
-    glLoadIdentity( ); // La reinitialiser, on ne sait jamais
-    gluPerspective(70, (float)WIN_HEIGHT/WIN_WIDTH, -1., 2.); // Définir les paramètres pour notre projection orthographique
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity( );
+    gluPerspective(70, (float)WIN_HEIGHT/WIN_WIDTH, -1., 2.);
 
-    // Definition de la matrice modelview
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt( 5.5, 21, 4, // position de la caméra
@@ -72,8 +58,6 @@ void PieceWindow::keyPressEvent(QKeyEvent * event)
         event->ignore();
         break;
     }
-
-    // Acceptation de l'evenement et mise a jour de la scene
     event->accept();
     updateGL();
 }

@@ -37,7 +37,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         board.cpp \
-    tetrixpiece.cpp \
     block.cpp \
     tetrisfactory.cpp \
     tetrispiece.cpp \
@@ -47,7 +46,6 @@ SOURCES += \
 
 HEADERS += \
         board.h \
-    tetrixpiece.h \
     block.h \
     tetrisfactory.h \
     tetrispiece.h \

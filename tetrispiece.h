@@ -30,8 +30,9 @@ public:
 private:
     TetrisShape mShape;
     vector<Block*> mPiece;
-    QColor mColor;
     vector<QPoint> mOrigins;
+    QColor mColor;
+
 };
 
 #endif // TETRISPIECE_H

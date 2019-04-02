@@ -40,7 +40,12 @@ MainWindow::MainWindow()
 
 }
 
-MainWindow::~MainWindow(){}
+MainWindow::~MainWindow(){
+    delete mBoard;
+    delete mPWindow;
+    delete score;
+    delete cam;
+}
 
 void MainWindow::keyPressEvent(QKeyEvent * event)
 {

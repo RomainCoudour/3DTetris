@@ -10,28 +10,25 @@
 
 using namespace cv;
 
-//enum MOVE { LEFT, RIGHT, ROTATE, DROP, NOTHING };
-
 class WebCam : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit WebCam(QWidget *parent);//, int width, int height);
+    explicit WebCam(QWidget *parent);
     ~WebCam();
+
     int getMove() { return mMove; }
 
 private:
-    //Ui::WebCam *ui;
     VideoCapture * webCam_;
-    // Timer d'animation
     QTimer m_AnimationTimer;
     CascadeClassifier face_cascade_;
     QLabel *mLabel;
     int mMove;
 
 signals:
-    void signalMove();//{ return mMove; }
+    void signalMove();
 };
 
 #endif // WEBCAM_H

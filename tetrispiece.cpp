@@ -26,7 +26,6 @@ void TetrisPiece::display(){
         block->displayBlock();
 }
 
-
 void TetrisPiece::onWebcamEvent(int direction){
     vector<QPoint> resOrigins;
     switch (direction) {
