@@ -15,7 +15,7 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
     webCam_->set(CV_CAP_PROP_FRAME_WIDTH,600);
     webCam_->set(CV_CAP_PROP_FRAME_HEIGHT,425);
     mLabel->setFixedSize(webCam_->get(CV_CAP_PROP_FRAME_WIDTH), webCam_->get(CV_CAP_PROP_FRAME_HEIGHT));
-    face_cascade_.load( "../TestWebCamQt - Copie/haarcascade/fist_v3.xml" );
+    face_cascade_.load( "../QTPROJECT/fist_v3.xml" );
     mMove = NOTHING;
 
     // Connexion du timer
@@ -71,7 +71,7 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
         }
     });
 
-    m_AnimationTimer.setInterval(100);
+    m_AnimationTimer.setInterval(30);
     m_AnimationTimer.start();
 }
 
