@@ -86,13 +86,13 @@ void Board::paintGL()
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity( );
-    gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, 2, -1);
+    gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, 1, -10);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt( 5, 0, 12, // position de la caméra
-    5, 7, 0, // position du point que fixe la caméra
-    0, 1, 0); // vecteur vertical
+    gluLookAt( 0, -2.5, 5, // position de la caméra
+        4.5, 3, 0, // position du point que fixe la caméra
+        0, 0, 1); // vecteur vertical
 
     while(checkForRowsComplete()){
         clearCompleteRow(row);
@@ -103,7 +103,8 @@ void Board::paintGL()
     if(isLost){
         qglColor(QColor(255,0,0));
         renderText(2.0,10.0,0.0,QString("YOU LOSE"), QFont("Helvetica", 30));
-        renderText(1.0,8.0,0.0,QString("Press R to retry"), QFont("Helvetica", 30));
+        renderText(0.5,8.0,0.0,QString("Press R to retry"), QFont("Helvetica", 30));
+        renderText(0,6.0,0.0,QString("Or ESCAPE to quit"), QFont("Helvetica", 30));
     }
 
     pWindow->setPiece(nextPiece);
