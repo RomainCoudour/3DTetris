@@ -92,6 +92,10 @@ void Board::paintGL()
         4.5, 3, 0, // position du point que fixe la caméra
         0, 0, 1); // vecteur vertical
 
+    /*gluLookAt( 5, 0, 12, // position de la caméra
+    5, 7, 0, // position du point que fixe la caméra
+    0, 1, 0); // vecteur vertical*/
+
     while(checkForRowsComplete()){
         clearCompleteRow(row);
         emit rowCleared();
