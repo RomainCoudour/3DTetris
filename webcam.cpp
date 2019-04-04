@@ -18,7 +18,6 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
     mLabel->setFixedSize(webCam_->get(CV_CAP_PROP_FRAME_WIDTH), webCam_->get(CV_CAP_PROP_FRAME_HEIGHT));
     QString path = QString(QDir::currentPath() + "/fist_v3.xml");
     face_cascade_.load( path.toStdString() );
-    mMove = NOTHING;
 
     // Connexion du timer
     connect(&m_AnimationTimer,  &QTimer::timeout, [&] {
