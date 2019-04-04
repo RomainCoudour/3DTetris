@@ -1,8 +1,5 @@
-#include "board.h"
 #include "mainwindow.h"
-#include "webcam.h"
 #include <QApplication>
-#include <QDebug>
 
 int main(int argc, char *argv[])
 {

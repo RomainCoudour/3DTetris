@@ -2,9 +2,8 @@
 #include <GL/glu.h>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QDebug>
 
-// Declarations des constantes
+// Constants
 const unsigned int WIN_WIDTH  = 1600;
 const unsigned int WIN_HEIGHT = 900;
 const float MAX_DIMENSION     = 50.0f;
@@ -40,7 +39,6 @@ Board::~Board()
 
 void Board::initializeGL()
 {
-
     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 }
@@ -57,7 +55,6 @@ void Board::resizeGL(int width, int height)
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
 
 }
 
@@ -89,8 +86,8 @@ void Board::paintGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt( 0, -2.5, 5, // position de la caméra
-        4.5, 3, 0, // position du point que fixe la caméra
-        0, 0, 1); // vecteur vertical
+               4.5, 3, 0, // position du point que fixe la caméra
+               0, 0, 1); // vecteur vertical
 
     while(checkForRowsComplete()){
         clearCompleteRow(row);
@@ -319,7 +316,7 @@ bool Board::checkForRowsComplete(){
 
 void Board::clearCompleteRow(int i){
     for(Block* b : array[i])
-            delete b;
+        delete b;
 
     while(i < 19){
         for(Block* b : array[i+1])

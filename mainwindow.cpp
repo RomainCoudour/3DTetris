@@ -18,6 +18,7 @@ MainWindow::MainWindow()
 
     mBoard->setFixedSize(1200,900);
     mBoard->move(600,0);
+
     mPWindow->setFixedSize(350,350);
     mPWindow->move(25,25);
 
@@ -39,10 +40,6 @@ MainWindow::MainWindow()
     connect(cam, SIGNAL(moveRight()), mBoard, SLOT(moveRight()));
     connect(cam, SIGNAL(moveRotate()), mBoard, SLOT(moveRotate()));
     connect(cam, SIGNAL(stopMove()), mBoard, SLOT(stopMove()));
-
-    mTimer.setInterval(500);
-    mTimer.start();
-
 }
 
 MainWindow::~MainWindow(){
@@ -60,14 +57,13 @@ void MainWindow::keyPressEvent(QKeyEvent * event)
     event->accept();
 }
 
+void MainWindow::displayScore(){
+    score->setText("Score : " + QString::number(mScore));
+}
 
 void MainWindow::increaseScore(){
     mScore++;
     displayScore();
-}
-
-void MainWindow::displayScore(){
-    score->setText("Score : " + QString::number(mScore));
 }
 
 void MainWindow::resetScore(){
