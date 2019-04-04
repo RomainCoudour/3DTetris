@@ -12,7 +12,7 @@ MainWindow::MainWindow()
     mScore = 0;
     mBoard = new Board(this);
     mPWindow = mBoard->getPieceWindow();
-    cam = new WebCam(this);//, 400, 500);
+    cam = new WebCam(this);
 
     cam->move(0,520);
 

@@ -12,6 +12,10 @@ enum TetrisMouvement { LEFT, RIGHT, ROTATE, DROP , SPAWN, NOTHING};
 enum TetrisShape { NoShape, ZShape, SShape, LineShape, TShape, SquareShape,
                    LShape, MirroredLShape };
 
+/*
+ * Class TetrisPiece : Désigne un objet qui contiendra tous les blocks pour former un tetriminos.
+ */
+
 class TetrisPiece
 {
 
@@ -20,9 +24,11 @@ public:
     TetrisPiece(TetrisShape shape, QColor color, vector<QPoint> origins);
     virtual ~TetrisPiece();
 
-    //Methods
+    //Method : Permet de créer une pièce
     void createPiece();
+    //Method : Permet d'afficher chaque block de la pièce
     void display();
+    //Method : Permet de modifier la position des blocks de la pièce en fonction du mouvement reçu
     void onWebcamEvent(int direction);
     vector<Block*> getBlocks(){return mPiece;}
     vector<QPoint> getOrigins(){return mOrigins;}
@@ -32,7 +38,6 @@ private:
     vector<Block*> mPiece;
     vector<QPoint> mOrigins;
     QColor mColor;
-
 };
 
 #endif // TETRISPIECE_H

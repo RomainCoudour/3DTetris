@@ -9,13 +9,12 @@
 #include <QDesktopWidget>
 #include <QTimer>
 
+/*
+ * Class TetrisFactory : Désigne le GL widget qui gerera l'affichage de la pièce suivante
+ */
+
 class PieceWindow : public QGLWidget
 {
-protected:
-    // GL METHODS
-    void initializeGL();
-    void resizeGL(int width, int height);
-    void paintGL();
 
 public:
     PieceWindow(QWidget *parent, TetrisPiece piece);
@@ -23,6 +22,11 @@ public:
     void setPiece(TetrisPiece p) { mPiece = p; }
 
 private:
+    // GL METHODS
+    void initializeGL();
+    void resizeGL(int width, int height);
+    void paintGL();
+
     TetrisPiece mPiece;
 };
 
