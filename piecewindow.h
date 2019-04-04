@@ -7,10 +7,9 @@
 #include <QKeyEvent>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QTimer>
 
 /*
- * Class TetrisFactory : Désigne le GL widget qui gerera l'affichage de la pièce suivante
+ * Class PieceWindow : Désigne le GL widget qui gerera l'affichage de la pièce suivante
  */
 
 class PieceWindow : public QGLWidget
