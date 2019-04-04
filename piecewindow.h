@@ -21,7 +21,6 @@ public:
     PieceWindow(QWidget *parent, TetrisPiece piece);
     ~PieceWindow();
     void setPiece(TetrisPiece p) { mPiece = p; }
-    void keyPressEvent(QKeyEvent * event);
 
 private:
     TetrisPiece mPiece;

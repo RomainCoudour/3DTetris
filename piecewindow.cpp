@@ -38,7 +38,7 @@ void PieceWindow::paintGL()
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity( );
-    gluPerspective(70, (float)WIN_HEIGHT/WIN_WIDTH, -1., 2.);
+    gluPerspective(70, (float)WIN_HEIGHT/WIN_WIDTH, 2, -1);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -47,17 +47,4 @@ void PieceWindow::paintGL()
     0, 1, 0); // vecteur vertical
 
     mPiece.display();
-}
-
-void PieceWindow::keyPressEvent(QKeyEvent * event)
-{
-    switch (event->key()) {
-        case Qt::Key_Z:
-            break;
-    default:
-        event->ignore();
-        break;
-    }
-    event->accept();
-    updateGL();
 }

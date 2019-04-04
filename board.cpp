@@ -86,7 +86,7 @@ void Board::paintGL()
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity( );
-    gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, -1., 2.);
+    gluPerspective(70, (float)WIN_WIDTH/WIN_HEIGHT, 2, -1);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -276,7 +276,7 @@ bool Board::checkForCollisionsBeforeMoving(int direction){
 bool Board::checkArrayForCollisions(Block* block, int direction){
     QPoint coord = block->getCurrOrigin();
 
-    if(coord.y() < GRID_ROWS && coord.y() > LOWER_BORDER && coord.x() >= SIDE_BORDER_LEFT && coord.x() < SIDE_BORDER_RIGHT){
+    if(coord.y() < GRID_ROWS && coord.y() >= LOWER_BORDER && coord.x() >= SIDE_BORDER_LEFT && coord.x() < SIDE_BORDER_RIGHT){
         switch (direction) {
         case LEFT:
             return(array[coord.y()][coord.x()-1] != nullptr);
