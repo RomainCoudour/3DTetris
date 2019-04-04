@@ -8,7 +8,6 @@ using namespace std;
 WebCam::WebCam(QWidget *parent)//, int width, int height)
     : QWidget(parent)
 {
-    //this->setFixedSize(width, height);
     this->setFixedSize(600,400);
     mLabel = new QLabel(this);
     mLabel->move(0,0);
@@ -16,8 +15,7 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
     webCam_->set(CV_CAP_PROP_FRAME_WIDTH,600);
     webCam_->set(CV_CAP_PROP_FRAME_HEIGHT,425);
     mLabel->setFixedSize(webCam_->get(CV_CAP_PROP_FRAME_WIDTH), webCam_->get(CV_CAP_PROP_FRAME_HEIGHT));
-    QString path = QString(QDir::currentPath() + "/fist_v3.xml");
-    face_cascade_.load( path.toStdString() );
+    face_cascade_.load( "../QTPROJECT/fist_v3.xml" );
 
     // Connexion du timer
     connect(&m_AnimationTimer,  &QTimer::timeout, [&] {
@@ -43,6 +41,7 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
                     for (int i=0;i<(int)faces.size();i++){
                         rectangle(image,faces[i],Scalar(0,255,0),2);
                     }
+                    // affectation des mains aux bons rectangles
                     leftHand = QPoint(faces[0].x,faces[0].y);
                     rightHand = QPoint(faces[1].x,faces[1].y);
                     if(leftHand.x() > rightHand.x()){
