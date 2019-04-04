@@ -1,5 +1,6 @@
 #include "webcam.h"
 #include <QDebug>
+#include <QDir>
 
 using namespace cv;
 using namespace std;
@@ -15,7 +16,8 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
     webCam_->set(CV_CAP_PROP_FRAME_WIDTH,600);
     webCam_->set(CV_CAP_PROP_FRAME_HEIGHT,425);
     mLabel->setFixedSize(webCam_->get(CV_CAP_PROP_FRAME_WIDTH), webCam_->get(CV_CAP_PROP_FRAME_HEIGHT));
-    face_cascade_.load( "../QTPROJECT/fist_v3.xml" );
+    QString path = QString(QDir::currentPath() + "/fist_v3.xml");
+    face_cascade_.load( path.toStdString() );
     mMove = NOTHING;
 
     // Connexion du timer
