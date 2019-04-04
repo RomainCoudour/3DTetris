@@ -9,6 +9,7 @@ MainWindow::MainWindow()
     setFixedSize(WIN_WIDTH,WIN_HEIGHT);
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
 
+    mScore = 0;
     mBoard = new Board(this);
     mPWindow = mBoard->getPieceWindow();
     cam = new WebCam(this);//, 400, 500);
@@ -21,7 +22,7 @@ MainWindow::MainWindow()
     mPWindow->move(25,25);
 
     score = new QLabel(this);
-    score->setText("Score : " + QString::number(0));
+    score->setText("Score : " + QString::number(mScore));
     score->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     QFont font = score->font();
     font.setPointSize(40);
@@ -30,10 +31,14 @@ MainWindow::MainWindow()
     score->move(25,400);
     score->setFixedSize(350,100);
 
-    connect(&mTimer,  &QTimer::timeout, [&] {
-        mBoard->tetrisMove(cam->getMove());
-        score->setText("Score : " + QString::number(*(mBoard->getScore())));
-    });
+    connect(mBoard, SIGNAL(resetScore()), this, SLOT(resetScore()));
+    connect(mBoard, SIGNAL(rowCleared()), this, SLOT(increaseScore()));
+
+    connect(cam, SIGNAL(moveDrop()), mBoard, SLOT(moveDrop()));
+    connect(cam, SIGNAL(moveLeft()), mBoard, SLOT(moveLeft()));
+    connect(cam, SIGNAL(moveRight()), mBoard, SLOT(moveRight()));
+    connect(cam, SIGNAL(moveRotate()), mBoard, SLOT(moveRotate()));
+    connect(cam, SIGNAL(stopMove()), mBoard, SLOT(stopMove()));
 
     mTimer.setInterval(500);
     mTimer.start();
@@ -53,4 +58,19 @@ void MainWindow::keyPressEvent(QKeyEvent * event)
         QApplication::closeAllWindows();
     mBoard->keyPressEvent(event);
     event->accept();
+}
+
+
+void MainWindow::increaseScore(){
+    mScore++;
+    displayScore();
+}
+
+void MainWindow::displayScore(){
+    score->setText("Score : " + QString::number(mScore));
+}
+
+void MainWindow::resetScore(){
+    mScore = 0;
+    displayScore();
 }

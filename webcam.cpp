@@ -52,23 +52,22 @@ WebCam::WebCam(QWidget *parent)//, int width, int height)
                     }
 
                     if(rightHand.y()+100< leftHand.y()) //LEFT
-                        mMove = LEFT;
+                        emit moveLeft();
                     else if (rightHand.y()> leftHand.y()+100 ) //RIGHT
-                        mMove = RIGHT;
+                        emit moveRight();
                     else if(rightHand.x()<leftHand.x()+200) //ROTATE
-                        mMove = ROTATE;
+                        emit moveRotate();
                     else if(rightHand.y() > webCam_->get(CV_CAP_PROP_FRAME_HEIGHT)/2+50 && leftHand.y() > webCam_->get(CV_CAP_PROP_FRAME_HEIGHT)/2+50) //DROP
-                        mMove = DROP;
+                        emit moveDrop();
                     else //NOTHING;
-                        mMove = NOTHING;
+                        emit stopMove();
                 }
                 else
-                    mMove = NOTHING;
+                    emit stopMove();
                 // Convert to Qt image
                 QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
                 // Display on label
                 mLabel->setPixmap(QPixmap::fromImage(img));
-                emit signalMove();
             }
         }
     });

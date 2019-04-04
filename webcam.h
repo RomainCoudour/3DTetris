@@ -18,17 +18,18 @@ public:
     explicit WebCam(QWidget *parent);
     ~WebCam();
 
-    int getMove() { return mMove; }
-
 private:
     VideoCapture * webCam_;
     QTimer m_AnimationTimer;
     CascadeClassifier face_cascade_;
     QLabel *mLabel;
-    int mMove;
 
 signals:
-    void signalMove();
+    void moveDrop();
+    void moveRight();
+    void moveLeft();
+    void moveRotate();
+    void stopMove();
 };
 
 #endif // WEBCAM_H

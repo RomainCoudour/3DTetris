@@ -26,7 +26,6 @@ public:
     void setPieceWindow(PieceWindow* pw) { pWindow = pw; }
     void keyPressEvent(QKeyEvent * event);
     void tetrisMove(int move);
-    int* getScore() { return mScore; }
 
 protected:
     // GL METHODS
@@ -48,6 +47,17 @@ protected:
     void reset();
     bool pieceOutOfBound(TetrisPiece piece);
 
+signals:
+    void rowCleared();
+    void resetScore();
+
+public slots:
+    void moveRight();
+    void moveLeft();
+    void moveDrop();
+    void moveRotate();
+    void stopMove();
+
 
 private:
     int GRID_COLUMNS = 10;
@@ -57,7 +67,6 @@ private:
     int SIDE_BORDER_RIGHT = 10;
 
     int row;
-    int* mScore;
     bool isComplete = false;
     bool isLost = false;
     bool isOnPause = false;

@@ -13,6 +13,7 @@
 
 class MainWindow : public QWidget
 {
+    Q_OBJECT
 public:
     MainWindow();
     ~MainWindow();
@@ -21,11 +22,17 @@ private:
     Board* mBoard;
     PieceWindow* mPWindow;
     QLabel* score;
+    int mScore;
     WebCam* cam;
     QTimer mTimer;
 
 protected:
     void keyPressEvent(QKeyEvent * event);
+    void displayScore();
+
+public slots:
+    void increaseScore();
+    void resetScore();
 
 };
 

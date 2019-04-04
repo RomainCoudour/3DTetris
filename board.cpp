@@ -15,7 +15,6 @@ Board::Board(QWidget *parent)
     curPiece = TetrisFactory::createPiece();
     nextPiece = TetrisFactory::createPiece();
     pWindow = new PieceWindow(parent, nextPiece);
-    mScore = new int(0);
 
     connect(&mTimer,  &QTimer::timeout, [&] {
         if(!isOnPause && !isLost){
@@ -37,7 +36,6 @@ Board::Board(QWidget *parent)
 Board::~Board()
 {
     delete pWindow;
-    delete mScore;
 }
 
 void Board::initializeGL()
@@ -96,6 +94,7 @@ void Board::paintGL()
 
     while(checkForRowsComplete()){
         clearCompleteRow(row);
+        emit rowCleared();
     }
 
     drawBlocks();
@@ -329,9 +328,6 @@ void Board::clearCompleteRow(int i){
         array[i] = array[i+1];
         i++;
     }
-
-    // TODO : emit signal
-    *mScore = *mScore+1;
 }
 
 void Board::nextMove(){
@@ -362,8 +358,8 @@ void Board::reset(){
     curPiece = TetrisFactory::createPiece();
     nextPiece = TetrisFactory::createPiece();
 
+    emit resetScore();
     updateGL();
-
     mTimer.start();
 }
 
@@ -372,4 +368,24 @@ bool Board::pieceOutOfBound(TetrisPiece piece){
         if(block->getCurrOrigin().y() >= 20)
             return true;
     return false;
+}
+
+void Board::moveDrop(){
+    tetrisMove(DROP);
+}
+
+void Board::moveLeft(){
+    tetrisMove(LEFT);
+}
+
+void Board::moveRight(){
+    tetrisMove(RIGHT);
+}
+
+void Board::moveRotate(){
+    tetrisMove(ROTATE);
+}
+
+void Board::stopMove(){
+    tetrisMove(NOTHING);
 }
